@@ -1,0 +1,32 @@
+{# ################################################################################################################## #}
+{# INCLUDES ######################################################################################################### #}
+{# ################################################################################################################## #}
+{% extends "base.html" %}
+
+{# ################################################################################################################## #}
+{# MAIN CONTENT ##################################################################################################### #}
+{# ################################################################################################################## #}
+{% block app_content %}
+    <br>
+    <h1 class="text-center">Ertië</h1>
+    <br>
+    <h2 class="text-center">Dësch-Tennis Lenneng</h2>
+    {% if env == 'test' %}
+        <br>
+        <hr>
+        <h4>Warning: This is a <span class="badge rounded-pill bg-warning text-dark">test</span> environment.</h4>
+        <p>This version of Ertië is subject to constant changes.</p>
+        <hr>
+        <br>
+        <br>
+    {% elif env == 'development' %}
+        <br>
+        <hr>
+        <h4>Warning: This is a <span class="badge rounded-pill bg-danger">development</span> environment.</h4>
+        <p>This version of Ertië is subject to constant changes, and its stacks might be wiped clean without any prior
+            warnings, and without mercy.</p>
+        <hr>
+        <br>
+        <br>
+    {% endif %}
+{% endblock %}

@@ -49,7 +49,9 @@ class Config(object):
     DB_SSL_CERTIFICATE_KEY = os.environ.get('DB_SSL_CERT_KEY')      # path to the ssl key associated with the above cert
     DB_SSL_CERTIFICATE_ROOT = os.environ.get('DB_SSL_CERT_ROOT')    # path to the root CA
     DB_SSL_MODE = os.environ.get('DB_SSL_MODE')                     # the SSL mose to use, i.e. verify-full
+    DB_URL = f'{DB_DIALECT}+{DB_DRIVER}://{DB_USERNAME}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_DATABASE}'
 
+    SQLALCHEMY_DATABASE_URI = DB_URL
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     SQLALCHEMY_ENGINE_OPTIONS = {'max_identifier_length': 128}
     SQLALCHEMY_ECHO = DEBUG

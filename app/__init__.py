@@ -93,6 +93,19 @@ def createApp(configClass=Config) -> flask.Flask:
     except Exception as e:
         _logAndRaiseException(app.logger, 'Unable to create the error handling module!', e)
 
+    # DATABASE #########################################################################################################
+    try:
+        # initialize the database and its migration
+        db = flask_sqlalchemy.SQLAlchemy(session_options={'autoflush': False})
+        migrate = flask_migrate.Migrate()
+        db.init_app(app)
+        migrate.init_app(app, db)
+
+        # log success
+        app.logger.info('Database: Operational!')
+    except Exception as e:
+        _logAndRaiseException(app.logger, 'Unable to initialize the database.', e)
+
     # log success
     app.logger.info('Ertië is operational ... waking up Frodo and Gandalf ...')
     app.logger.info('Frodo and Gandalf are ready to lead your club to glory. Gl hf!\n-----\n')
