@@ -127,8 +127,6 @@ venv/
 ENV/
 env.bak/
 venv.bak/
-envCIA/
-.envCIA/
 
 # Spyder project settings
 .spyderproject

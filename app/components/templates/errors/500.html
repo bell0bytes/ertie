@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block app_content %}
+    <hr>
+    <h1 class="text-center">500: Internal Server Error</h1>
+    <hr>
+    <h2>Dir sidd S.P.E.C.I.A.L. ...</h2>
+    <hr>
+    <h3>Dir hutt eng Exceptioun ausgeléist.</h3>
+    <hr>
+    <h5>Äre Preis: Dir dierft de BOFH kontaktéieren!</h5>
+    {% if e != None %}
+        <hr>    
+        <h4>Original Error</h4>
+        <p>{{ e }}</p>
+    {% endif %}
+    <hr>
+    <p>Note to the BOFH: The traceback is logged to the ertie.log file.</p>
+{% endblock %}

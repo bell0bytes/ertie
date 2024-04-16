@@ -1,0 +1,90 @@
+<ul class="navbar-nav me-auto mb-2 mb-lg-0">
+    {% if current_user.is_anonymous %}
+        <!-- items to show when the user is offline -->
+        <li class="nav-item">
+            <!-- the login button -->
+            <a class="nav-link" href="">Login</a>
+        </li>
+
+    {% else %}
+        <!-- items to show when the user is online -->
+        <li class="nav-item">
+            <!-- Member Management -->
+            <a class="nav-link"
+               data-bs-toggle="tooltip"
+               data-bs-placement="bottom"
+               title=""
+               href="">
+                Memberen</a>
+        </li>
+
+        <li class="nav-item">
+            <!-- Statistics -->
+            <a class="nav-link"
+               data-bs-toggle="tooltip"
+               data-bs-placement="bottom"
+               title=""
+               href="">
+                Statistiken</a>
+        </li>
+
+        <li class="nav-item">
+            <!-- Inventar -->
+            <a class="nav-link"
+               data-bs-toggle="tooltip"
+               data-bs-placement="bottom"
+               title=""
+               href="">
+                Inventar</a>
+        </li>
+
+        <li class="nav-item">
+            <!-- Sponsoring -->
+            <a class="nav-link"
+               data-bs-toggle="tooltip"
+               data-bs-placement="bottom"
+               title=""
+               href="">
+                Sponsoring</a>
+        </li>
+
+        <li class="nav-item">
+            <!-- Administration -->
+            <a class="nav-link"
+               data-bs-toggle="tooltip"
+               data-bs-placement="bottom"
+               title=""
+               href="">
+                Administratioun</a>
+        </li>
+
+        <li class="nav-item">
+            <!-- Profile -->
+            <a class="nav-link"
+               data-bs-toggle="tooltip"
+               data-bs-placement="bottom"
+               title=""
+               href="">
+                Profil
+            </a>
+        </li>
+
+        <li class="nav-item">
+            <!-- Help and Documentation -->
+            <a class="nav-link disabled"
+               data-bs-toggle="tooltip"
+               data-bs-placement="bottom"
+               title="">
+                Help</a>
+        </li>
+
+        <li class="nav-item">
+            <!-- Logout -->
+            <a class="nav-link"
+               data-bs-toggle="tooltip"
+               data-bs-placement="bottom"
+               title="Äddi"
+               href="">Logout</a>
+        </li>
+    {% endif %}
+</ul>

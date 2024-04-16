@@ -1,5 +1,5 @@
 """
-The CIA driver. The main workhorse is the __init__.py file in the app sub folder.
+The Ertië driver. The main workhorse is the __init__.py file in the app subfolder.
 """
 
 ########################################################################################################################

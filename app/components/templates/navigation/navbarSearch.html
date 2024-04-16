@@ -1,0 +1,9 @@
+{% if g.searchForm and not current_user.is_anonymous %}
+    <!-- if a search form is defined -> render it at the right of the navbar -->
+    <form class="navbar-form navbar-right" method="get" action="{{ url_for('search.searchResults') }}">
+        <div class="form-group">
+            {{ g.searchForm.csrf_token }}
+            {{ g.searchForm.q(size=20, class="form-control", placeholder=g.searchForm.q.label.text) }}
+        </div>
+    </form>
+{% endif %}

@@ -69,7 +69,7 @@ class Config(object):
     BOOTSTRAP_FORM_INLINE_CLASSES = 'row row-cols-lg-auto g-3 align-items-center'
     BOOTSTRAP_ICON_SIZE = 'md'
     BOOTSTRAP_ICON_COLOR = None
-    BOOTSTRAP_BOOTSWATCH_THEME = None
+    BOOTSTRAP_BOOTSWATCH_THEME = os.environ.get('BOOTSTRAP_BOOTSWATCH_THEME')
     BOOTSTRAP_MSG_CATEGORY = 'primary'
     BOOTSTRAP_TABLE_VIEW_TITLE = 'View'
     BOOTSTRAP_TABLE_EDIT_TITLE = 'Edit'

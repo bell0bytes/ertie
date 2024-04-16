@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block app_content %}
+	<h1>You are S.P.E.C.I.A.L. ...</h1>
+    <hr>
+    <h3>You triggered an Exception!</h3>
+    <hr>
+    <h5>
+        There are two possibilities: You can either contact and blame GB, or blame Google. Should be an easy choice.
+    </h5>
+    {% if e != None %}
+        <br>
+        <br>
+        <h4>Original Error</h4>
+        <p>{{ e }}</p>
+    {% endif %}
+{% endblock %}

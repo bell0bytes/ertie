@@ -73,6 +73,26 @@ def createApp(configClass=Config) -> flask.Flask:
     except Exception as e:
         _printAndRaiseException('Unable to create loggers!', e)
 
+    # ERROR HANDLING ###################################################################################################
+    try:
+        # define exception logger with lambda function
+        app.exceptionLogger = lambda err: app.logger.error(f'{err}\n\n{traceback.format_exc()}\n-----\n')
+        app.exceptionLogger.__doc__ = """Lambda function to log exceptions."""
+
+        # define exception flasher with lambda function
+        app.exceptionFlasher = lambda err: flask.flash(f'{err}', 'danger')
+        app.exceptionFlasher.__doc__ = """Lambda function to flash exceptions."""
+
+        # register the error handling blueprint, which also adds custom 404, 405 and 500 error pages
+        from app.components.errors import bpErrors
+        app.register_blueprint(bpErrors)
+
+        # log success
+        app.logger.info('Error Handlers: Operational!')
+
+    except Exception as e:
+        _logAndRaiseException(app.logger, 'Unable to create the error handling module!', e)
+
     # log success
     app.logger.info('Ertië is operational ... waking up Frodo and Gandalf ...')
     app.logger.info('Frodo and Gandalf are ready to lead your club to glory. Gl hf!\n-----\n')
