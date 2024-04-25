@@ -80,6 +80,7 @@ class Config(object):
 
     # MEILISEARCH ######################################################################################################
     MEILISEARCH_URL = os.environ.get('MEILISEARCH_URL')
+    MEILISEARCH_PORT = os.environ.get('MEILISEARCH_PORT')
     MEILISEARCH_INDEX = os.environ.get('MEILISEARCH_INDEX')
     MEILISEARCH_API_KEY = os.environ.get('MEILISEARCH_API_KEY')
 
@@ -93,3 +94,8 @@ class Config(object):
     # LOG SETTINGS #####################################################################################################
     MAX_LOG_SIZE = int(os.environ.get('MAX_LOG_SIZE'))                      # maximal size per log file
     MAX_LOG_COUNT = int(os.environ.get('MAX_LOG_COUNT'))                    # maximal number of logs to keep in rotation
+
+    # AUTHENTICATION ###################################################################################################
+    ZITADEL_DOMAIN = os.environ.get('ZITADEL_DOMAIN')
+    ZITADEL_CLIENT_ID = os.environ.get('ZITADEL_CLIENT_ID')
+    ZITADEL_CLIENT_SECRET = os.environ.get('ZITADEL_CLIENT_SECRET')

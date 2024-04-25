@@ -106,6 +106,50 @@ def createApp(configClass=Config) -> flask.Flask:
     except Exception as e:
         _logAndRaiseException(app.logger, 'Unable to initialize the database.', e)
 
+    # SECURITY #########################################################################################################
+    try:
+        # initialize the login manager
+        from authlib.integrations.flask_oauth2 import ResourceProtector
+        from app.components.auth import ZitadelIntrospectTokenValidator
+        app.authManager = ResourceProtector()
+        app.authManager.register_token_validator(ZitadelIntrospectTokenValidator(app.config))
+        app.logger.info('Auth Manager: Operational!')
+
+        # session protection
+        paranoid = Paranoid(app)
+        paranoid.redirect_view = '/'
+
+    except Exception as e:
+        _logAndRaiseException(app.logger, 'Unable to initialize flask extensions.', e)
+
+    # BOOTSTRAP ########################################################################################################
+    try:
+        bootstrap = flask_bootstrap.Bootstrap5()  # bootstrap support
+        moment = flask_moment.Moment()  # Moment support
+
+        # initialize the bootstrap theme
+        bootstrap.init_app(app)
+        app.logger.info('Bootstrap: Operational!')
+
+        # initialize the moment extension (for time and date)
+        moment.init_app(app)
+        app.logger.info('Moment: Operational!')
+
+    except Exception as e:
+        _logAndRaiseException(app.logger, 'Unable to initialize flask extensions.', e)
+
+    # FULL_TEXT SEARCH #################################################################################################
+    try:
+        # initialize the fulltext search engine
+        from app.components.search import MeiliSearch
+        app.fullTextSearch = MeiliSearch(app.config)
+
+        # log success
+        app.logger.info(f'FullText Search Engine Operational: {app.fullTextSearch.name} - {app.fullTextSearch.index}!')
+
+    except Exception as e:
+        _logAndRaiseException(app.logger, 'Unable to initialise Full-Text Search capabilities.', e)
+
     # log success
     app.logger.info('Ertië is operational ... waking up Frodo and Gandalf ...')
     app.logger.info('Frodo and Gandalf are ready to lead your club to glory. Gl hf!\n-----\n')

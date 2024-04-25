@@ -1,0 +1,1 @@
+from .meilisearch import MeiliSearch
