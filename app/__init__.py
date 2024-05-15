@@ -6,28 +6,22 @@ This file handles the entire initialization of the Ertië app.
 # INCLUDES #############################################################################################################
 ########################################################################################################################
 
-# OPERATING SYSTEM #####################################################################################################
-import os
-import tempfile
-
-# LOGGING ##############################################################################################################
-import traceback                                                    # exception history handling
-
 # FLASK ################################################################################################################
 import flask
-from flask_paranoid import Paranoid
-import flask_sqlalchemy
-import flask_migrate
-import werkzeug
 import werkzeug.exceptions
-import flask_bootstrap
-import flask_moment
 
 # CONFIGURATION ########################################################################################################
 from conf.conf import Config                                        # the configuration file
 
-# HELPERS ##############################################################################################################
-from app.helpers import Logger
+# LOGGING ##############################################################################################################
+import traceback                                                    # exception history handling
+from app.components.logging import Logger
+
+########################################################################################################################
+# GLOBALS ##############################################################################################################
+########################################################################################################################
+db = None
+loginManager = None
 
 
 ########################################################################################################################
@@ -92,63 +86,6 @@ def createApp(configClass=Config) -> flask.Flask:
 
     except Exception as e:
         _logAndRaiseException(app.logger, 'Unable to create the error handling module!', e)
-
-    # DATABASE #########################################################################################################
-    try:
-        # initialize the database and its migration
-        db = flask_sqlalchemy.SQLAlchemy(session_options={'autoflush': False})
-        migrate = flask_migrate.Migrate()
-        db.init_app(app)
-        migrate.init_app(app, db)
-
-        # log success
-        app.logger.info('Database: Operational!')
-    except Exception as e:
-        _logAndRaiseException(app.logger, 'Unable to initialize the database.', e)
-
-    # SECURITY #########################################################################################################
-    try:
-        # initialize the login manager
-        from authlib.integrations.flask_oauth2 import ResourceProtector
-        from app.components.auth import ZitadelIntrospectTokenValidator
-        app.authManager = ResourceProtector()
-        app.authManager.register_token_validator(ZitadelIntrospectTokenValidator(app.config))
-        app.logger.info('Auth Manager: Operational!')
-
-        # session protection
-        paranoid = Paranoid(app)
-        paranoid.redirect_view = '/'
-
-    except Exception as e:
-        _logAndRaiseException(app.logger, 'Unable to initialize flask extensions.', e)
-
-    # BOOTSTRAP ########################################################################################################
-    try:
-        bootstrap = flask_bootstrap.Bootstrap5()  # bootstrap support
-        moment = flask_moment.Moment()  # Moment support
-
-        # initialize the bootstrap theme
-        bootstrap.init_app(app)
-        app.logger.info('Bootstrap: Operational!')
-
-        # initialize the moment extension (for time and date)
-        moment.init_app(app)
-        app.logger.info('Moment: Operational!')
-
-    except Exception as e:
-        _logAndRaiseException(app.logger, 'Unable to initialize flask extensions.', e)
-
-    # FULL_TEXT SEARCH #################################################################################################
-    try:
-        # initialize the fulltext search engine
-        from app.components.search import MeiliSearch
-        app.fullTextSearch = MeiliSearch(app.config)
-
-        # log success
-        app.logger.info(f'FullText Search Engine Operational: {app.fullTextSearch.name} - {app.fullTextSearch.index}!')
-
-    except Exception as e:
-        _logAndRaiseException(app.logger, 'Unable to initialise Full-Text Search capabilities.', e)
 
     # log success
     app.logger.info('Ertië is operational ... waking up Frodo and Gandalf ...')

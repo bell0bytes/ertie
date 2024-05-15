@@ -96,6 +96,6 @@ class Config(object):
     MAX_LOG_COUNT = int(os.environ.get('MAX_LOG_COUNT'))                    # maximal number of logs to keep in rotation
 
     # AUTHENTICATION ###################################################################################################
-    ZITADEL_DOMAIN = os.environ.get('ZITADEL_DOMAIN')
+    ZITADEL_URL = os.environ.get('ZITADEL_URL')
     ZITADEL_CLIENT_ID = os.environ.get('ZITADEL_CLIENT_ID')
     ZITADEL_CLIENT_SECRET = os.environ.get('ZITADEL_CLIENT_SECRET')

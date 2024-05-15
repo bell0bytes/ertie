@@ -19,7 +19,7 @@
 {# NAVIGATION BAR ################################################################################################### #}
 {# ################################################################################################################## #}
 {% block navbar %}
-    <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top" aria-label="main-navbar">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
         <div class="container-fluid">
             <!-- load the navbar header -->
             {% include 'navigation/navbarHeader.html' %}
@@ -30,7 +30,7 @@
                 {% include 'navigation/navbarItems.html' %}
 
                 <!-- load search form -->
-                {% include 'navigation/navbarSearch.html' %}
+                {% include 'navigation/navbarSearchForm.html' %}
             </div>
         </div>
     </nav>
@@ -121,7 +121,6 @@
 {# TABLE ############################################################################################################ #}
 {% macro renderHistoryTable(history, endpoint) %}
     <table class="table table-hover">
-        <caption>Changelist</caption>
         <thead>
         <tr>
             <th scope="col">By Whom</th>

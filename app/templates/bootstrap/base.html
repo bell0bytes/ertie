@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    {% block head %}
+        <!-- required meta tags -->
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+        {% block styles %}
+            {{ bootstrap.load_css() }}
+        {% endblock %}
+
+        <title>Ertië</title>
+        <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+    {% endblock %}
+</head>
+
+<body>
+{% block navbar %}{% endblock %}<br><br><br> {# top navbar #}
+{% block content %}{% endblock %} {# page content #}
+{% block scripts %}
+    {{ bootstrap.load_js() }}                                       {# scripts #}
+    {{ moment.include_moment() }}
+{% endblock %}
+</body>
+
+</html>
