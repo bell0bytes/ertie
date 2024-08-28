@@ -64,5 +64,6 @@ snyk:
     - apt-get install nodejs npm -y
     - npm install -g snyk
     - snyk auth $SNYK_TOKEN
+    - snyk config set org=bell0bytes
     - snyk monitor --project-name=$CI_PROJECT_NAME
     - snyk test
