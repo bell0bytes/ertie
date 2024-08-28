@@ -31,7 +31,7 @@ qodana:
   variables:
     QODANA_TOKEN: $qodana_token
   image:
-    name: jetbrains/qodana-python
+    name: jetbrains/qodana-python-community
     entrypoint: [""]
   script:
     - qodana --save-report --results-dir=$CI_PROJECT_DIR/.qodana
