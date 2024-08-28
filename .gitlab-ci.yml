@@ -1,6 +1,7 @@
 workflow:
    name: 'Code Quality'
 stages:
+  - security
   - quality
 
 # SonarQube Scan
@@ -35,3 +36,33 @@ qodana:
     entrypoint: [""]
   script:
     - qodana --save-report --results-dir=$CI_PROJECT_DIR/.qodana
+
+# Snyk Dependency Scanning
+snyk:
+  stage: security
+  only:
+    - main
+    - merge_requests
+  image:
+    name: python:3.11
+    entrypoint: [""]
+  variables:
+    PIP_CACHE_DIR: "$CI_PROJECT_DIR/.cache/pip"
+  cache:
+    paths:
+      - .cache/pip
+      - env/
+
+  before_script:
+    - python3 -V
+    - python3 -m venv env
+    - source env/bin/activate
+    - pip install -r requirements
+
+  script:
+    - apt-get update -y
+    - apt-get install nodejs npm -y
+    - npm install -g snyk
+    - snyk auth $SNYK_TOKEN
+    - snyk monitor --project-name=$CI_PROJECT_NAME
+    - snyk test
