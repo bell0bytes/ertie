@@ -17,5 +17,5 @@ try:
 except Exception as e:
     # if an Exception occurs, print an error message and quit
     print(f'Critical Error: Unable to initialise Ertië!\nMessage: {e}')
-    exit(1)
+    raise SystemExit(1)
     

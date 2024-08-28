@@ -8,6 +8,7 @@ This file handles the entire initialization of the Ertië app.
 
 # FLASK ################################################################################################################
 import flask
+from flask_wtf.csrf import CSRFProtect                              # CSRF protection for non FlaskForm forms
 import werkzeug.exceptions
 
 # CONFIGURATION ########################################################################################################
@@ -20,6 +21,7 @@ from app.components.logging import Logger
 ########################################################################################################################
 # GLOBALS ##############################################################################################################
 ########################################################################################################################
+csrf = CSRFProtect()
 db = None
 loginManager = None
 
@@ -34,7 +36,7 @@ def _printAndRaiseException(msg: str, e: Exception):
 
 def _logAndRaiseException(logger, msg: str, e: Exception):
     logger.error(msg)
-    logger.error(f'Message: {e}')
+    logger.error(f'Exception: {e}')
     raise werkzeug.exceptions.InternalServerError(msg) from e
 
 
@@ -51,6 +53,7 @@ def createApp(configClass=Config) -> flask.Flask:
         # create a Flask app with specified configuration
         app = flask.Flask(__name__)                 # the main application object ...
         app.config.from_object(configClass)         # ... and its configuration
+        csrf.init_app(app)                          # ... and the csrf protection
 
     except Exception as e:
         _printAndRaiseException('Unable to initialize the Flask app!', e)
