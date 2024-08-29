@@ -32,7 +32,7 @@ pytest:
     - source env/bin/activate
     - pip install -r requirements.txt
   script:
-    - pytest
+    - python3 -m pytest
 
 # SonarQube Scan
 sonarqube:
