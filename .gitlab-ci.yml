@@ -37,6 +37,15 @@ qodana:
   script:
     - qodana --save-report --results-dir=$CI_PROJECT_DIR/.qodana
 
+# GitGuardian Secret Scanning
+gitguardian:
+  stage: security
+  image: gitguardian/ggshield:latest
+  variables:
+    GITGUARDIAN_API_KEY: $GITGUARDIAN_API_KEY
+  script:
+    - ggshield secret scan ci
+
 # Snyk Dependency Scanning
 snyk:
   stage: security
