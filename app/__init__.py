@@ -10,6 +10,8 @@ This file handles the entire initialization of the Ertië app.
 import flask
 from flask_wtf.csrf import CSRFProtect                              # CSRF protection for non FlaskForm forms
 import werkzeug.exceptions
+import flask_bootstrap                                              # bootstrap CSS
+import flask_moment                                                 # date and time
 
 # CONFIGURATION ########################################################################################################
 from conf.conf import Config                                        # the configuration file
@@ -25,6 +27,11 @@ csrf = CSRFProtect()
 db = None
 loginManager = None
 
+########################################################################################################################
+# FLASK PLUGINS ########################################################################################################
+########################################################################################################################
+bootstrap = flask_bootstrap.Bootstrap5()                                            # bootstrap support
+moment = flask_moment.Moment()                                                      # Moment support
 
 ########################################################################################################################
 # HELPERS ##############################################################################################################
@@ -90,8 +97,29 @@ def createApp(configClass=Config) -> flask.Flask:
     except Exception as e:
         _logAndRaiseException(app.logger, 'Unable to create the error handling module!', e)
 
+    # BOOTSTRAP ########################################################################################################
+    try:
+        # initialize the bootstrap theme
+        bootstrap.init_app(app)
+        app.logger.info('Bootstrap: Operational!')
+
+        # initialize the moment extension (for time and date)
+        moment.init_app(app)
+        app.logger.info('Moment: Operational!')
+    except Exception as e:
+        _logAndRaiseException(app.logger, 'Unable to initialize Bootstrap!', e)
+
     # log success
     app.logger.info('Ertië is operational ... waking up Frodo and Gandalf ...')
     app.logger.info('Frodo and Gandalf are ready to lead your club to glory. Gl hf!\n-----\n')
 
+    # BLUEPRINTS #######################################################################################################
+    try:
+        # initialize the index / main module
+        from app.components.main import bpMain
+        app.register_blueprint(bpMain)
+        app.logger.info('Index Module: Operational!')
+
+    except Exception as e:
+        _logAndRaiseException(app.logger, 'Unable to initialize blueprints!.', e)
     return app

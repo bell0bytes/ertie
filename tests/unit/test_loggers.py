@@ -1,5 +1,5 @@
 """
-Basic unit tests for the creation of the Flask app.
+Unit test for the Logging class.
 """
 
 ########################################################################################################################

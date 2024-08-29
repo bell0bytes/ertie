@@ -72,7 +72,7 @@ def _createRotatingFileHandler(config) -> logging.Logger:
         # return the file logger
         return fileLogger
 
-    except Exception as e: # pragma: no cover
+    except Exception as e:
         raise RuntimeError('Unable to create the File Logger!') from e
 
 
@@ -98,7 +98,7 @@ def _createDBLogger(config) -> logging.Logger:
         # return the file logger
         return dbLogger
 
-    except Exception as e: # pragma: no cover
+    except Exception as e:
         raise RuntimeError('Unable to create the DB Logger!') from e
 
 

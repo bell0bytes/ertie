@@ -37,7 +37,7 @@ class Config(object):
     TRAP_HTTP_EXCEPTIONS = True if os.environ.get('TRAP_HTTP_EXCEPTIONS', '0') == '1' else False
 
     SECRET_KEY = os.environ.get('SECRET_KEY')                                   # the secret key to protect against CSRF
-    if len(SECRET_KEY) < 32:
+    if len(SECRET_KEY) < 32: # pragma: no cover
         raise RuntimeError('SECRET_KEY must be at least 32 characters long!')
 
     # SESSION OPTIONS ##################################################################################################
