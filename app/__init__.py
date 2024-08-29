@@ -43,7 +43,7 @@ def _logAndRaiseException(logger, msg: str, e: Exception):
 ########################################################################################################################
 # MAIN APP #############################################################################################################
 ########################################################################################################################
-def createApp(gitconfigClass=Config) -> flask.Flask:
+def createApp(configClass=Config) -> flask.Flask:
     """
     Main entry point. Creates the Flask app.
     """
@@ -85,7 +85,7 @@ def createApp(gitconfigClass=Config) -> flask.Flask:
         app.register_blueprint(bpErrors)
 
         # log success
-        app.logger.info('Error Handlers: Operational!')
+        app.logger.info('Error Handlers: Operational!\n-----')
 
     except Exception as e:
         _logAndRaiseException(app.logger, 'Unable to create the error handling module!', e)

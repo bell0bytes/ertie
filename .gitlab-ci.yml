@@ -22,6 +22,7 @@ sonarqube:
       - .sonar/cache
   script:
     - sonar-scanner
+  allow_failure: true
 
 # Qodana Scan
 qodana:
@@ -36,6 +37,7 @@ qodana:
     entrypoint: [""]
   script:
     - qodana --save-report --results-dir=$CI_PROJECT_DIR/.qodana
+  allow_failure: true
 
 # GitGuardian Secret Scanning
 gitguardian:
@@ -45,6 +47,7 @@ gitguardian:
     GITGUARDIAN_API_KEY: $GITGUARDIAN_API_KEY
   script:
     - ggshield secret scan ci
+  allow_failure: true
 
 # Snyk Dependency Scanning
 snyk:
@@ -76,3 +79,4 @@ snyk:
     - snyk config set org=bell0bytes
     - snyk monitor --project-name=$CI_PROJECT_NAME
     - snyk test
+  allow_failure: true

@@ -20,6 +20,7 @@ pathToBaseDirectory = pathlib.Path().absolute()                             # th
 # LOAD ENVIRONMENT VARIABLES ###########################################################################################
 ########################################################################################################################
 load_dotenv(pathToBaseDirectory.joinpath('.env'))
+load_dotenv(pathToBaseDirectory.joinpath('.flaskenv'))
 
 
 ########################################################################################################################
@@ -28,16 +29,39 @@ load_dotenv(pathToBaseDirectory.joinpath('.env'))
 class Config(object):
     # NOTE: Flask debug settings are set in ~/.profile as they need to be available before the settings file is loaded
 
-    # ERTIE OPTIONS ####################################################################################################
-    ERTIE_ENV = os.environ.get('ERTIE_ENV')
-
     # FLASK OPTIONS ####################################################################################################
-    DEBUG = True if ERTIE_ENV in ['development', 'test'] else False
-    SECRET_KEY = os.environ.get('SECRET_KEY')                                   # the secret key to protect against CSRF
-    PERMANENT_SESSION_LIFETIME = timedelta(hours=int(os.environ.get('PERMANENT_SESSION_LIFETIME')))
-    REMEMBER_COOKIE_DURATION = timedelta(days=int(os.environ.get('REMEMBER_COOKIE_DURATION')))
+    FLASK_APP = os.environ.get('APP_ENV')
+    ERTIE_ENV = os.environ.get('ERTIE_ENV', 'production')
+    DEBUG = True if ERTIE_ENV == 'development' else False
+    TESTING = True if ERTIE_ENV == 'test' else False
+    TRAP_HTTP_EXCEPTIONS = True if os.environ.get('TRAP_HTTP_EXCEPTIONS', '0') == '1' else False
 
-    # SQLALCHEMY SETTINGS ##############################################################################################
+    SECRET_KEY = os.environ.get('SECRET_KEY')                                   # the secret key to protect against CSRF
+    if len(SECRET_KEY) < 32:
+        raise RuntimeError('SECRET_KEY must be at least 32 characters long!')
+
+    # SESSION OPTIONS ##################################################################################################
+    PERMANENT_SESSION_LIFETIME = timedelta(days=int(os.environ.get('PERMANENT_SESSION_LIFETIME', '31')))
+    SESSION_COOKIE_NAME = os.environ.get('SESSION_COOKIE_NAME', None)
+    SESSION_COOKIE_DOMAIN = os.environ.get('SESSION_COOKIE_DOMAIN', None)
+    SESSION_COOKIE_PATH = os.environ.get('SESSION_COOKIE_PATH', None)
+    SESSION_COOKIE_HTTPONLY = True if os.environ.get('SESSION_COOKIE_HTTPONLY', '1') == '1' else False
+    SESSION_COOKIE_SECURE = True if os.environ.get('SESSION_COOKIE_SECURE', '1') == '1' else False
+    SESSION_COOKIE_SAMESITE = os.environ.get('SESSION_COOKIE_SAMESITE', None)
+    SESSION_REFRESH_EACH_REQUEST = True if os.environ.get('SESSION_REFRESH_EACH_REQUEST', '1') == '1' else False
+    MAX_COOKIE_SIZE = int(os.environ.get('MAX_COOKIE_SIZE', '4093'))
+
+    # SERVER SETTINGS ##################################################################################################
+    USE_X_SENDFILE = True if os.environ.get('USE_X_SENDFILE', '1') == '1' else False
+    SEND_FILE_MAX_AGE_DEFAULT = None
+    SERVER_NAME = os.environ.get('SERVER_NAME', None)
+    APPLICATION_ROOT = os.environ.get('APPLICATION_ROOT', '/')
+    PREFERRED_URL_SCHEME = os.environ.get('PREFERRED_URL_SCHEME', 'http')
+    MAX_CONTENT_LENGTH = None
+    TEMPLATES_AUTO_RELOAD = True if DEBUG is True else False
+    EXPLAIN_TEMPLATE_LOADING = True if DEBUG is True else False
+
+    # DATABASE SETTINGS ################################################################################################
     DB_DIALECT = os.environ.get('DB_DIALECT')                       # i.e. postgresql, oracle, mysql, sqlite ...
     DB_DRIVER = os.environ.get('DB_DRIVER')                         # i.e. psycopg2, oracle, ...
     DB_USERNAME = os.environ.get('DB_USER')
@@ -51,10 +75,17 @@ class Config(object):
     DB_SSL_MODE = os.environ.get('DB_SSL_MODE')                     # the SSL mose to use, i.e. verify-full
     DB_URL = f'{DB_DIALECT}+{DB_DRIVER}://{DB_USERNAME}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_DATABASE}'
 
+    # SQLALCHEMY SETTINGS #############################################################################################
     SQLALCHEMY_DATABASE_URI = DB_URL
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     SQLALCHEMY_ENGINE_OPTIONS = {'max_identifier_length': 128}
     SQLALCHEMY_ECHO = DEBUG
+
+    # FULL-TEXT SEARCH SETTINGS ########################################################################################
+    MEILISEARCH_URL = os.environ.get('MEILISEARCH_URL')
+    MEILISEARCH_PORT = os.environ.get('MEILISEARCH_PORT')
+    MEILISEARCH_INDEX = os.environ.get('MEILISEARCH_INDEX')
+    MEILISEARCH_API_KEY = os.environ.get('MEILISEARCH_API_KEY')
 
     # EMAIL SETTINGS ###################################################################################################
     MAIL_SERVER = os.environ.get('MAIL_SERVER')
@@ -77,12 +108,6 @@ class Config(object):
     BOOTSTRAP_TABLE_EDIT_TITLE = 'Edit'
     BOOTSTRAP_TABLE_DELETE_TITLE = 'Delete'
     BOOTSTRAP_TABLE_NEW_TITLE = 'New'
-
-    # MEILISEARCH ######################################################################################################
-    MEILISEARCH_URL = os.environ.get('MEILISEARCH_URL')
-    MEILISEARCH_PORT = os.environ.get('MEILISEARCH_PORT')
-    MEILISEARCH_INDEX = os.environ.get('MEILISEARCH_INDEX')
-    MEILISEARCH_API_KEY = os.environ.get('MEILISEARCH_API_KEY')
 
     # PAGINATION #######################################################################################################
     RESULTS_PER_PAGE = int(os.environ.get('RESULTS_PER_PAGE'))
