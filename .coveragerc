@@ -10,3 +10,5 @@ exclude_also =
     raise werkzeug.exceptions.InternalServerError
     except Exception as e:\n\s*raise werkzeug.exceptions.InternalServerError
     except Exception as e:\n\s*raise RuntimeError
+    except Exception as e:\n\s*_printAndRaiseException
+    except Exception as e:\n\s*_logAndRaiseException

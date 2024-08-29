@@ -36,12 +36,12 @@ moment = flask_moment.Moment()                                                  
 ########################################################################################################################
 # HELPERS ##############################################################################################################
 ########################################################################################################################
-def _printAndRaiseException(msg: str, e: Exception):
+def _printAndRaiseException(msg: str, e: Exception): # pragma: no cover
     print(msg + f'\nMessage: {e}')
     raise werkzeug.exceptions.InternalServerError(msg) from e
 
 
-def _logAndRaiseException(logger, msg: str, e: Exception):
+def _logAndRaiseException(logger, msg: str, e: Exception): # pragma: no cover
     logger.error(msg)
     logger.error(f'Exception: {e}')
     raise werkzeug.exceptions.InternalServerError(msg) from e
