@@ -1,3 +1,10 @@
+"""
+The Logger class encapsulates the logging functionality.
+
+:Authors:
+    - Gilles Bellot
+"""
+
 ########################################################################################################################
 # INCLUDES #############################################################################################################
 ########################################################################################################################
@@ -50,15 +57,22 @@ def _createRotatingFileHandler(config) -> logging.Logger:
     """
     try:
         fileHandler = _getFileHandler('ertie.log', config)
-        fileHandler.setLevel(logging.INFO)
+        if config.get('DEBUG') is True:
+            fileHandler.setLevel(logging.DEBUG)
+        else:
+            fileHandler.setLevel(logging.INFO)
+
         fileLogger = logging.getLogger('ErtieLogger')
         fileLogger.addHandler(fileHandler)
-        fileLogger.setLevel(logging.INFO)
+        if config.get('DEBUG') is True:
+            fileLogger.setLevel(logging.DEBUG)
+        else:
+            fileLogger.setLevel(logging.INFO)
 
         # return the file logger
         return fileLogger
 
-    except Exception as e:
+    except Exception as e: # pragma: no cover
         raise RuntimeError('Unable to create the File Logger!') from e
 
 
@@ -69,15 +83,22 @@ def _createDBLogger(config) -> logging.Logger:
     try:
         # define the file handler
         fileHandler = _getFileHandler('db.log', config)
-        fileHandler.setLevel(logging.INFO)
+        if config.get('DEBUG') is True:
+            fileHandler.setLevel(logging.DEBUG)
+        else:
+            fileHandler.setLevel(logging.INFO)
+
         dbLogger = logging.getLogger('sqlalchemy.engine')
         dbLogger.addHandler(fileHandler)
-        dbLogger.setLevel(logging.INFO)
+        if config.get('DEBUG') is True:
+            dbLogger.setLevel(logging.DEBUG)
+        else:
+            dbLogger.setLevel(logging.INFO)
 
         # return the file logger
         return dbLogger
 
-    except Exception as e:
+    except Exception as e: # pragma: no cover
         raise RuntimeError('Unable to create the DB Logger!') from e
 
 
@@ -99,8 +120,8 @@ def _getFileHandler(logFile: str, config) -> logging.handlers.RotatingFileHandle
 def _getLogDirectory() -> pathlib.Path:
     pathToBaseDirectory = pathlib.Path().absolute()
     pathToLogsDirectory = pathToBaseDirectory / 'logs'
-    if not pathToLogsDirectory.is_dir():
-        # search does not exist -> create it
+    if not pathToLogsDirectory.is_dir(): # pragma: no cover
+        # log directory does not exist -> create it
         pathToLogsDirectory.mkdir(parents=True, exist_ok=False)
 
     return pathToLogsDirectory
