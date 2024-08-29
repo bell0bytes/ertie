@@ -24,5 +24,4 @@ def index():
         # get the current environment to show a warning message in case of DEV and TEST
         return flask.render_template('main/index.html', env=flask.current_app.config['ERTIE_ENV'])
     except Exception as e:
-        # an exception was caught -> raise an internal server error
         raise werkzeug.exceptions.InternalServerError('Unable to render the main HTML template!') from e

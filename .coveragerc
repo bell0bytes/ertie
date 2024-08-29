@@ -1,0 +1,14 @@
+[report]
+exclude_also =
+    if self.debug:
+    if config.DEBUG
+    raise AssertionError
+    raise NotImplementedError
+    if TYPE_CHECKING:
+    class .*\bProtocol\):
+    @(abc\.)?abstractmethod
+    raise werkzeug.exceptions.InternalServerError
+    except Exception as e:\n\s*raise werkzeug.exceptions.InternalServerError
+    except Exception as e:\n\s*raise RuntimeError
+    except Exception as e:\n\s*_printAndRaiseException
+    except Exception as e:\n\s*_logAndRaiseException
