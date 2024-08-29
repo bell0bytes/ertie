@@ -23,7 +23,7 @@ sonarqube:
     paths:
       - .sonar/cache
   script:
-    - sonar-scanner -Dsonar.qualitygate.wait=true
+    - sonar-scanner -Dsonar.qualitygate.wait=true -Dsonar.python.coverage.reportPaths=coverage.xml
 
 # GitGuardian Secret Scanning
 gitguardian:
