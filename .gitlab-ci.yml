@@ -1,5 +1,5 @@
 workflow:
-   name: 'Code Quality'
+   name: 'Security & Code Quality'
 stages:
   - security
   - quality
