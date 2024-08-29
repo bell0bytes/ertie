@@ -9,7 +9,6 @@ sonarqube:
   stage: quality
   rules:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event" || $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
-      when: always
     - if: $CI_PIPELINE_SOURCE == "schedule"
       when: always
     - when: never
@@ -25,25 +24,6 @@ sonarqube:
       - .sonar/cache
   script:
     - sonar-scanner
-  allow_failure: true
-
-# Qodana Scan
-qodana:
-  stage: quality
-  rules:
-    - if: $CI_PIPELINE_SOURCE == "merge_request_event" || $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
-      when: always
-    - if: $CI_PIPELINE_SOURCE == "schedule"
-      when: always
-    - when: never
-  variables:
-    QODANA_TOKEN: $qodana_token
-  image:
-    name: jetbrains/qodana-python-community
-    entrypoint: [""]
-  script:
-    - qodana --save-report --results-dir=$CI_PROJECT_DIR/.qodana
-  allow_failure: true
 
 # GitGuardian Secret Scanning
 gitguardian:
@@ -53,7 +33,6 @@ gitguardian:
     GITGUARDIAN_API_KEY: $GITGUARDIAN_API_KEY
   script:
     - ggshield secret scan ci
-  allow_failure: true
 
 # Snyk Dependency Scanning
 snyk:
@@ -90,4 +69,3 @@ snyk:
     - snyk config set org=bell0bytes
     - snyk monitor --project-name=$CI_PROJECT_NAME
     - snyk test
-  allow_failure: true
