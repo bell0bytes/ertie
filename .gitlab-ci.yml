@@ -23,7 +23,7 @@ sonarqube:
     paths:
       - .sonar/cache
   script:
-    - sonar-scanner
+    - sonar-scanner -Dsonar.qualitygate.wait=true
 
 # GitGuardian Secret Scanning
 gitguardian:
