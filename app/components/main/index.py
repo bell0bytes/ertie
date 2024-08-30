@@ -31,7 +31,10 @@ bpMain = flask.Blueprint('main', __name__)
 @bpMain.route('/index')
 def index():
     try:
-        # get the current environment to show a warning message in case of DEV and TEST
-        return flask.render_template('main/index.html', env=flask.current_app.config['ERTIE_ENV'])
+        payload = {
+            'env': flask.current_app.config.get('ERTIE_ENV'),
+            'clubName': flask.current_app.config.get('CLUB_NAME')
+        }
+        return flask.render_template('main/index.html', payload=payload)
     except Exception as e:
         raise werkzeug.exceptions.InternalServerError('Unable to render the main HTML template!') from e
