@@ -127,3 +127,6 @@ class Config(object):
     ZITADEL_URL = os.environ.get('ZITADEL_URL')
     ZITADEL_CLIENT_ID = os.environ.get('ZITADEL_CLIENT_ID')
     ZITADEL_CLIENT_SECRET = os.environ.get('ZITADEL_CLIENT_SECRET')
+
+    # CLUB SETTINGS ####################################################################################################
+    CLUB_NAME = os.environ.get('CLUB_NAME', 'Best Club Ever')

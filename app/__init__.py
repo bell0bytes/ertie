@@ -108,7 +108,7 @@ def createApp(configClass=Config) -> flask.Flask:
 
         # initialize the moment extension (for time and date)
         moment.init_app(app)
-        app.logger.info('Moment: Operational!')
+        app.logger.info('Moment: Operational!\n-----')
     except Exception as e:
         _logAndRaiseException(app.logger, 'Unable to initialize Bootstrap!', e)
 
