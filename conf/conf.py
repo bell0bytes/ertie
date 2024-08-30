@@ -124,10 +124,10 @@ class Config(object):
     MAX_LOG_COUNT = int(os.environ.get('MAX_LOG_COUNT'))                    # maximal number of logs to keep in rotation
 
     # AUTHENTICATION ###################################################################################################
-    AUTH_CLIENT_ID = os.environ.get('AUTH_CLIENT_ID')
-    AUTH_CLIENT_SECRET = os.environ.get('AUTH_CLIENT_SECRET')
-    AUTH_METADATA_URL = os.environ.get('AUTH_METADATA_URL')
-    AUTH_NAME = os.environ.get('AUTH_NAME')
+    AUTH_CLIENT_ID = os.environ.get('AUTH_CLIENT_ID', '123')
+    AUTH_CLIENT_SECRET = os.environ.get('AUTH_CLIENT_SECRET', 'secret')
+    AUTH_METADATA_URL = os.environ.get('AUTH_METADATA_URL', 'http://localhost:5000')
+    AUTH_NAME = os.environ.get('AUTH_NAME', 'oauth')
 
     # CLUB SETTINGS ####################################################################################################
     CLUB_NAME = os.environ.get('CLUB_NAME', 'Best Club Ever')

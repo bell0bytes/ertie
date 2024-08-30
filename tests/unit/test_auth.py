@@ -5,12 +5,11 @@ Warning: this is a stub
 SPDX-FileCopyrightText: © 2024 Gilles Bellot <gilles.bellot@bell0bytes.eu>
 SPDX-License-Identifier: AGPL-3.0-or-later
 """
-from flask import session
-
 
 ########################################################################################################################
 # IMPORTS ##############################################################################################################
 ########################################################################################################################
+from flask import session
 
 ########################################################################################################################
 # TESTS ################################################################################################################
@@ -21,10 +20,14 @@ def test_logout(testClient):
         assert session.get('user') is None
 
 def test_login(testClient):
-    with testClient.application.test_request_context():
-        response = testClient.get('/login')
-        assert response.status_code == 302
+    response = testClient.get('/login')
+    assert response.status_code == 200
+    assert b'http://localhost' == response.data
 
-def test_callback(testClient, mocker):
-    response = testClient.get('/callback')
-    assert response.status_code == 500
+def test_callback(testClient):
+    #mocker.patch('app.components.auth.auth._getUser', return_value='testUser')
+    with testClient:
+        response = testClient.get('/callback')
+        assert response.status_code == 302
+        assert session['user']['name'] == 'cosmo'
+        assert session['user']['email'] == 'cosmo@best.dog'
