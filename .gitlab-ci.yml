@@ -11,7 +11,7 @@ stages:
 pytest:
   stage: test
   rules:
-    - if: $CI_PIPELINE_SOURCE == "merge_request_event" || $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
     - if: $CI_PIPELINE_SOURCE == "schedule"
       when: always
     - when: never
@@ -41,7 +41,7 @@ pytest:
 sonarqube:
   stage: quality
   rules:
-    - if: $CI_PIPELINE_SOURCE == "merge_request_event" || $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
     - if: $CI_PIPELINE_SOURCE == "schedule"
       when: always
     - when: never
@@ -71,7 +71,7 @@ gitguardian:
 snyk:
   stage: security
   rules:
-    - if: $CI_PIPELINE_SOURCE == "merge_request_event" || $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
       changes:
         - requirements.txt
       when: always
