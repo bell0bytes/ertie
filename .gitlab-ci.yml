@@ -61,6 +61,14 @@ sonarqube:
 # GitGuardian Secret Scanning
 gitguardian:
   stage: security
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+      when: always
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+      when: never
+    - if: $CI_PIPELINE_SOURCE == "schedule"
+      when: always
+    - when: never
   image: gitguardian/ggshield:latest
   variables:
     GITGUARDIAN_API_KEY: $GITGUARDIAN_API_KEY
