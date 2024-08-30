@@ -39,8 +39,9 @@ def login():
 def callback():
     try:
         # handle the callback from the auth provider and store the user token in the session variable
-        flask.session['user'] = flask.current_app.auth.zitadel.authorize_access_token()
-        return flask.redirect(flask.url_for('main.index'))
+        flask.session['user'] = (getattr(flask.current_app.auth, current_app.config.get('AUTH_NAME')).
+                                 authorize_access_token())
+        return flask.redirect(flask.url_for('main.index')) # pragma: no cover
     except Exception as e:
         raise werkzeug.exceptions.InternalServerError('Unable to authorize!') from e
 
@@ -49,6 +50,6 @@ def logout():
     try:
         # delete the session variable
         flask.session.pop('user', None)
-        return flask.redirect('/')
+        return flask.redirect(flask.url_for('main.index'))
     except Exception as e:
         raise werkzeug.exceptions.InternalServerError('Unable to logout!') from e
