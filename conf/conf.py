@@ -1,6 +1,9 @@
 """
 Configuration file. Reads data from a .env file in the root of the installation directory.
 WARNING: This file will be overridden when Ertië is updated, change it at your own risk
+
+SPDX-FileCopyrightText: © 2024 Gilles Bellot <gilles.bellot@bell0bytes.eu>
+SPDX-License-Identifier: AGPL-3.0-or-later
 """
 
 ########################################################################################################################

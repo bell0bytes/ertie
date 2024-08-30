@@ -1,3 +1,8 @@
+{# LICENSE
+SPDX-FileCopyrightText: © 2024 Gilles Bellot <gilles.bellot@bell0bytes.eu>
+SPDX-License-Identifier: AGPL-3.0-or-later
+#}
+
 {% if g.searchForm and not current_user.is_anonymous %}
     <!-- if a search form is defined -> render it at the right of the navbar -->
     <form class="navbar-form navbar-right" method="get" action="{{ url_for('search.searchResults') }}">
