@@ -31,11 +31,9 @@ bpMain = flask.Blueprint('main', __name__)
 @bpMain.route('/index')
 def index():
     try:
-        user = flask.session.get('user')
         payload = {
             'env': flask.current_app.config.get('ERTIE_ENV'),
-            'clubName': flask.current_app.config.get('CLUB_NAME'),
-            'user': user
+            'clubName': flask.current_app.config.get('CLUB_NAME')
         }
         return flask.render_template('main/index.html', payload=payload)
     except Exception as e:

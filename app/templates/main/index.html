@@ -13,7 +13,6 @@ SPDX-License-Identifier: AGPL-3.0-or-later
 {# ################################################################################################################## #}
 {% set env = payload.get('env') %}
 {% set clubName = payload.get('clubName') %}
-{% set user = payload.get('user') %}
 
 {# ######################ss############################################################################################ #}
 {# MAIN CONTENT ##################################################################################################### #}
@@ -22,7 +21,6 @@ SPDX-License-Identifier: AGPL-3.0-or-later
     <br>
     <h1 class="text-center">Ertië</h1>
     <h3 class="text-center">{{ clubName }}</h3>
-    {{ user }}
     {% if env == 'test' %}
         <br>
         <hr>
