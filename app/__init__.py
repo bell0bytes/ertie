@@ -13,7 +13,8 @@ SPDX-License-Identifier: AGPL-3.0-or-later
 import flask
 from flask_wtf.csrf import CSRFProtect                              # CSRF protection for non FlaskForm forms
 import werkzeug.exceptions
-import flask_bootstrap                                              # bootstrap CSS
+#noinspection PyPackageRequirements
+import flask_bootstrap                                             # bootstrap CSS
 import flask_moment                                                 # date and time
 
 # CONFIGURATION ########################################################################################################
@@ -22,6 +23,9 @@ from conf.conf import Config                                        # the config
 # LOGGING ##############################################################################################################
 import traceback                                                    # exception history handling
 from app.components.logging import Logger
+
+# AUTHENTICATION #######################################################################################################
+from authlib.integrations.flask_client import OAuth                 # OAuth client for Flask
 
 ########################################################################################################################
 # GLOBALS ##############################################################################################################
@@ -112,9 +116,21 @@ def createApp(configClass=Config) -> flask.Flask:
     except Exception as e:
         _logAndRaiseException(app.logger, 'Unable to initialize Bootstrap!', e)
 
-    # log success
-    app.logger.info('Ertië is operational ... waking up Frodo and Gandalf ...')
-    app.logger.info('Frodo and Gandalf are ready to lead your club to glory. Gl hf!\n-----\n')
+    # AUTHENTICATION ###################################################################################################
+    try:
+        app.auth = OAuth(app)
+        app.auth.register(name=app.config.get('AUTH_NAME'),
+                          client_id=app.config.get('AUTH_CLIENT_ID'),
+                          client_secret=app.config.get('AUTH_CLIENT_SECRET'),
+                          server_metadata_url=app.config.get('AUTH_METADATA_URL'),
+                          client_kwargs={
+                              'scope': 'openid profile email',
+                              'code_challenge_method': 'S256' # enable PKCE
+                          }
+        )
+        app.logger.info('Moment: Operational!\n-----')
+    except Exception as e:
+        _logAndRaiseException(app.logger, 'Unable to initialize the IAM!', e)
 
     # BLUEPRINTS #######################################################################################################
     try:
@@ -123,6 +139,15 @@ def createApp(configClass=Config) -> flask.Flask:
         app.register_blueprint(bpMain)
         app.logger.info('Index Module: Operational!')
 
+        # initialize the authentication module
+        from app.components.auth import bpAuth
+        app.register_blueprint(bpAuth)
+        app.logger.info('Authentication Module: Operational!\n-----')
     except Exception as e:
         _logAndRaiseException(app.logger, 'Unable to initialize blueprints!.', e)
+
+    # log success
+    app.logger.info('Ertië is operational ... waking up Frodo and Gandalf ...')
+    app.logger.info('Frodo and Gandalf are ready to lead your club to glory. Gl hf!\n-----\n')
+
     return app

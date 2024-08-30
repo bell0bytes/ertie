@@ -1,5 +1,6 @@
 """
-Unit test for main blueprint.
+Unit tests for the auth blueprint.
+Warning: this is a stub
 
 SPDX-FileCopyrightText: © 2024 Gilles Bellot <gilles.bellot@bell0bytes.eu>
 SPDX-License-Identifier: AGPL-3.0-or-later
@@ -8,17 +9,25 @@ SPDX-License-Identifier: AGPL-3.0-or-later
 ########################################################################################################################
 # IMPORTS ##############################################################################################################
 ########################################################################################################################
-import werkzeug.exceptions
+from flask import session
 
 ########################################################################################################################
 # TESTS ################################################################################################################
 ########################################################################################################################
-def test_index(testClient):
-    """
-    GIVEN a Flask application
-    WHEN the main index is requested
-    THEN present the page
-    """
-    response = testClient.get('/')
+def test_logout(testClient):
+    with testClient:
+        testClient.get("/logout")
+        assert session.get('user') is None
+
+def test_login(testClient):
+    response = testClient.get('/login')
     assert response.status_code == 200
-    assert b'Ertie' in response.data
+    assert b'http://localhost' == response.data
+
+def test_callback(testClient):
+    #mocker.patch('app.components.auth.auth._getUser', return_value='testUser')
+    with testClient:
+        response = testClient.get('/callback')
+        assert response.status_code == 302
+        assert session['user']['name'] == 'cosmo'
+        assert session['user']['email'] == 'cosmo@best.dog'
