@@ -21,11 +21,12 @@ def test_logout(testClient):
 
 def test_login(testClient):
     response = testClient.get('/login')
-    assert response.status_code == 200
-    assert b'http://localhost' == response.data
+    assert response.status_code == 302
+    assert b'the link' in response.data
 
-def test_callback(testClient):
-    #mocker.patch('app.components.auth.auth._getUser', return_value='testUser')
+def test_callback(testClient, mocker):
+    mocker.patch('app.components.auth.auth._getUser', return_value={'name': 'cosmo',
+                                                                    'email': 'cosmo@best.dog'})
     with testClient:
         response = testClient.get('/callback')
         assert response.status_code == 302

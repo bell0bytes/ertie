@@ -15,7 +15,9 @@ SPDX-License-Identifier: AGPL-3.0-or-later
 # FLASK ################################################################################################################
 import flask
 import werkzeug.exceptions
-from flask import current_app
+
+# ERTIE ################################################################################################################
+from app.factory.extensions import auth
 
 ########################################################################################################################
 # BLUEPRINT ############################################################################################################
@@ -53,14 +55,14 @@ def logout():
 ########################################################################################################################
 # HELPERS ##############################################################################################################
 ########################################################################################################################
-def _login():
+def _login() -> str:
     # redirect to the auth provider
     redirect_uri = flask.url_for('auth.callback', _external=True)
-    return getattr(flask.current_app.auth, current_app.config.get('AUTH_NAME')).authorize_redirect(redirect_uri)
+    return getattr(auth, flask.current_app.config.get('AUTH_NAME')).authorize_redirect(redirect_uri)
 
-def _getUser():
+def _getUser() -> str:
     # get the user token
-    return getattr(flask.current_app.auth, current_app.config.get('AUTH_NAME')).authorize_access_token()
+    return getattr(auth, flask.current_app.config.get('AUTH_NAME')).authorize_access_token()
 
 def _logout():
     # pop the user from the session

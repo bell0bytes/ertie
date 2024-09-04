@@ -29,7 +29,7 @@ bpMain = flask.Blueprint('main', __name__)
 # INDEX ################################################################################################################
 @bpMain.route('/')
 @bpMain.route('/index')
-def index():
+def index() -> str:
     try:
         payload = {
             'env': flask.current_app.config.get('ERTIE_ENV'),

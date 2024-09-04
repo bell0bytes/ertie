@@ -8,6 +8,7 @@ SPDX-License-Identifier: AGPL-3.0-or-later
 ########################################################################################################################
 # INCLUDES #############################################################################################################
 ########################################################################################################################
+from typing import Type
 
 # FLASK & EXTENSIONS ###################################################################################################
 import flask
@@ -17,6 +18,7 @@ from .extensions import csrf, bootstrap, moment, auth
 # CONFIGURATION ########################################################################################################
 from .conf import Config                                        # the configuration file
 
+
 # COMPONENTS ###########################################################################################################
 import traceback                                                # exception history handling
 from app.components.logging import Logger
@@ -24,7 +26,7 @@ from app.components.logging import Logger
 ########################################################################################################################
 # MAIN APP #############################################################################################################
 ########################################################################################################################
-def createApp(configClass=Config) -> flask.Flask:
+def createApp(configClass : Type[Config] = Config) -> flask.Flask:
     """
     Main entry point. Creates the Flask app.
     """
@@ -33,7 +35,6 @@ def createApp(configClass=Config) -> flask.Flask:
     # main flask factory
     try:
         # create a Flask app with specified configuration
-        print(configClass.FLASK_TEMPLATES_DIR)
         app = flask.Flask(__name__, template_folder=configClass.FLASK_TEMPLATES_DIR) # the main factory object ...
         app.config.from_object(configClass)         # ... and its configuration
         csrf.init_app(app)                          # ... and the csrf protection
@@ -44,7 +45,7 @@ def createApp(configClass=Config) -> flask.Flask:
     # LOGGER ###########################################################################################################
     try:
         # create logging class
-        app.logger = Logger(app.config)
+        app.logger = Logger()
 
         # set print startup message
         app.logger.info('Ertië is initialising ...\n-----')

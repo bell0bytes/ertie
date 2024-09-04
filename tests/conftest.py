@@ -13,24 +13,6 @@ from app import createApp
 from app.factory.conf import Config                                        # the configuration file
 
 ########################################################################################################################
-# TEST CLASSES #########################################################################################################
-########################################################################################################################
-# mock the Auth library
-class AuthFunctions:
-    @staticmethod
-    def authorize_redirect(url: str) -> str:
-        return 'http://localhost'
-    @staticmethod
-    def authorize_access_token():
-        return {'name': 'cosmo',
-                'email': 'cosmo@best.dog'}
-
-class AuthTest:
-    def __init__(self, config):
-        authFunctions = AuthFunctions()
-        setattr(self, config.get('AUTH_NAME'), authFunctions)
-
-########################################################################################################################
 # FIXTURES #############################################################################################################
 ########################################################################################################################
 @pytest.fixture(scope='module')
@@ -39,7 +21,6 @@ def testApp():
     Config.DEBUG = False
     Config.TESTING = True
     testApp = createApp(configClass=Config)
-    testApp.auth = AuthTest(testApp.config)
     yield testApp
 
 @pytest.fixture(scope='module')
