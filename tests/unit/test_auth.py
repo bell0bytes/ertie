@@ -19,10 +19,11 @@ def test_logout(testClient):
         testClient.get("/logout")
         assert session.get('user') is None
 
-def test_login(testClient):
+def test_login(testClient, mocker):
+    mocker.patch('app.components.auth.auth._login', return_value='https://o.auth/callback')
     response = testClient.get('/login')
-    assert response.status_code == 302
-    assert b'the link' in response.data
+    assert response.status_code == 200
+    assert b'https://o.auth/callback' in response.data
 
 def test_callback(testClient, mocker):
     mocker.patch('app.components.auth.auth._getUser', return_value={'name': 'cosmo',
