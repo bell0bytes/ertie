@@ -28,7 +28,7 @@ bpErrors = flask.Blueprint('errors', __name__)
 # 404: Not Found #######################################################################################################
 @bpErrors.app_errorhandler(werkzeug.exceptions.NotFound)
 @bpErrors.app_errorhandler(404)
-def errorHandlerNotFound(error): # pragma: no cover
+def errorHandlerNotFound(error) -> tuple[str, int]: # pragma: no cover
     """
     On a "404: Not Found" error:
     The error is logged, and a custom 404 template is rendered with a flashed error message.
@@ -48,7 +48,7 @@ def errorHandlerNotFound(error): # pragma: no cover
 # 405: Method Not Allowed ##############################################################################################
 @bpErrors.app_errorhandler(werkzeug.exceptions.MethodNotAllowed)
 @bpErrors.app_errorhandler(405)
-def errorHandlerMethodNotAllowed(error): # pragma: no cover
+def errorHandlerMethodNotAllowed(error) -> tuple[str, int]: # pragma: no cover
     """
     On a "405: Method Not Allowed" error, the error is logged and a custom 405 template is rendered
     with a flashed error message.
@@ -68,7 +68,7 @@ def errorHandlerMethodNotAllowed(error): # pragma: no cover
 # 500: Internal Server Error ###########################################################################################
 @bpErrors.app_errorhandler(werkzeug.exceptions.InternalServerError)
 @bpErrors.app_errorhandler(500)
-def errorHandlerInternalServerError(e): # pragma: no cover
+def errorHandlerInternalServerError(e) -> tuple[str, int]: # pragma: no cover
     """
     On a "500: Internal Server Error" error, the error is logged and a custom 500 template
     is rendered with a flashed error message.

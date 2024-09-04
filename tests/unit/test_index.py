@@ -15,7 +15,7 @@ import werkzeug.exceptions
 ########################################################################################################################
 def test_index(testClient):
     """
-    GIVEN a Flask application
+    GIVEN a Flask factory
     WHEN the main index is requested
     THEN present the page
     """

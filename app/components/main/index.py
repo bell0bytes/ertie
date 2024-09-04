@@ -15,6 +15,7 @@ SPDX-License-Identifier: AGPL-3.0-or-later
 # FLASK ################################################################################################################
 import flask
 import werkzeug.exceptions
+from app.factory.conf import Config
 
 ########################################################################################################################
 # BLUEPRINT ############################################################################################################
@@ -29,11 +30,11 @@ bpMain = flask.Blueprint('main', __name__)
 # INDEX ################################################################################################################
 @bpMain.route('/')
 @bpMain.route('/index')
-def index():
+def index() -> str:
     try:
         payload = {
-            'env': flask.current_app.config.get('ERTIE_ENV'),
-            'clubName': flask.current_app.config.get('CLUB_NAME')
+            'env': Config.ERTIE_ENV,
+            'clubName': Config.CLUB_NAME
         }
         return flask.render_template('main/index.html', payload=payload)
     except Exception as e:

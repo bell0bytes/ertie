@@ -1,6 +1,8 @@
 """
 Configuration file. Reads data from a .env file in the root of the installation directory.
-WARNING: This file will be overridden when Ertië is updated, change it at your own risk
+Serves as a singleton for global configuration variables.
+
+WARNING: This file will be overridden when Ertië is updated, change it at your own risk.
 
 SPDX-FileCopyrightText: © 2024 Gilles Bellot <gilles.bellot@bell0bytes.eu>
 SPDX-License-Identifier: AGPL-3.0-or-later
@@ -29,11 +31,12 @@ load_dotenv(pathToBaseDirectory.joinpath('.flaskenv'))
 ########################################################################################################################
 # MAIN CONFIGURATION CLASS #############################################################################################
 ########################################################################################################################
-class Config(object):
+class Config:
     # NOTE: Flask debug settings are set in ~/.profile as they need to be available before the settings file is loaded
 
     # FLASK OPTIONS ####################################################################################################
     FLASK_APP = os.environ.get('APP_ENV')
+    FLASK_TEMPLATES_DIR = pathToBaseDirectory.joinpath("app").joinpath('templates')
     ERTIE_ENV = os.environ.get('ERTIE_ENV', 'production')
     DEBUG = True if ERTIE_ENV == 'development' else False
     TESTING = True if ERTIE_ENV == 'test' else False
