@@ -34,6 +34,7 @@ class Config(object):
 
     # FLASK OPTIONS ####################################################################################################
     FLASK_APP = os.environ.get('APP_ENV')
+    FLASK_TEMPLATES_DIR = pathToBaseDirectory.joinpath("app").joinpath('templates')
     ERTIE_ENV = os.environ.get('ERTIE_ENV', 'production')
     DEBUG = True if ERTIE_ENV == 'development' else False
     TESTING = True if ERTIE_ENV == 'test' else False

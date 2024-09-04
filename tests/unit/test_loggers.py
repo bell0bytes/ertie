@@ -15,14 +15,14 @@ import logging
 ########################################################################################################################
 def test_logger_info(testApp):
     """
-    GIVEN a Flask application without debugging enabled
+    GIVEN a Flask factory without debugging enabled
     THEN check that the logger is able to write info, error and critical messages
     """
     _testLoggers(testApp, debug=False)
 
 def test_logger_debug(debugApp):
     """
-    GIVEN a Flask application with debugging enabled
+    GIVEN a Flask factory with debugging enabled
     THEN check that the logger is able to write debug, info, error and critical messages
     """
     _testLoggers(debugApp, debug=True)
