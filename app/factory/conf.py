@@ -68,24 +68,51 @@ class Config:
     EXPLAIN_TEMPLATE_LOADING = True if DEBUG is True else False
 
     # DATABASE SETTINGS ################################################################################################
-    DB_DIALECT = os.environ.get('DB_DIALECT')                       # i.e. postgresql, oracle, mysql, sqlite ...
-    DB_DRIVER = os.environ.get('DB_DRIVER')                         # i.e. psycopg2, oracle, ...
-    DB_USERNAME = os.environ.get('DB_USER')
-    DB_PASSWORD = os.environ.get('DB_PW')                           # if no pw is set, SSL mode is assumed
+    DB_DIALECT = os.environ.get('DB_DIALECT', 'postgresql')         # i.e. postgresql, oracle, mysql, sqlite ...
+    DB_DRIVER = os.environ.get('DB_DRIVER', 'psycopg2')             # i.e. psycopg2, oracle, ...
+    DB_USERNAME = os.environ.get('DB_USERNAME')
+    DB_PASSWORD = os.environ.get('DB_PASSWORD')                     # if no pw is set, SSL mode is assumed
     DB_HOST = os.environ.get('DB_HOST')
-    DB_PORT = os.environ.get('DB_PORT')
+    DB_PORT = int(os.environ.get('DB_PORT', '5432'))
     DB_DATABASE = os.environ.get('DB_DATABASE')                     # oracle -> service
-    DB_SSL_CERTIFICATE = os.environ.get('DB_SSL_CERT')              # path to the ssl certificate
-    DB_SSL_CERTIFICATE_KEY = os.environ.get('DB_SSL_CERT_KEY')      # path to the ssl key associated with the above cert
-    DB_SSL_CERTIFICATE_ROOT = os.environ.get('DB_SSL_CERT_ROOT')    # path to the root CA
-    DB_SSL_MODE = os.environ.get('DB_SSL_MODE')                     # the SSL mose to use, i.e. verify-full
-    DB_URL = f'{DB_DIALECT}+{DB_DRIVER}://{DB_USERNAME}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_DATABASE}'
+    DB_SSL_CERTIFICATE_CLIENT = os.environ.get('DB_SSL_CERTIFICATE_CLIENT')         # path to the ssl certificate
+    DB_SSL_CERTIFICATE_CLIENT_KEY = os.environ.get('DB_SSL_CERTIFICATE_CLIENT_KEY') # path to the ssl key
+    DB_SSL_CERTIFICATE_ROOT = os.environ.get('DB_SSL_CERTIFICATE_ROOT')             # path to the root CA
+    DB_SSL_MODE = os.environ.get('DB_SSL_MODE', 'verify-full')      # the SSL mose to use, i.e. verify-full
 
-    # SQLALCHEMY SETTINGS #############################################################################################
-    SQLALCHEMY_DATABASE_URI = DB_URL
+    # SQLALCHEMY SETTINGS ##############################################################################################
+    SQLALCHEMY_DATABASE_URI = f'{DB_DIALECT}+{DB_DRIVER}://'
+    if DB_PASSWORD != '':
+        SQLALCHEMY_ENGINE_OPTIONS = {'max_identifier_length': 128,
+                                     'connect_args': {
+                                         'host': DB_HOST,
+                                         'user': DB_USERNAME,
+                                         'password': DB_PASSWORD,
+                                         'port': DB_PORT,
+                                         'dbname': DB_DATABASE}
+                                     }
+    else:
+        SQLALCHEMY_ENGINE_OPTIONS = {'max_identifier_length': 128,
+                                     'connect_args': {
+                                         'host': DB_HOST,
+                                         'user': DB_USERNAME,
+                                         'port': DB_PORT,
+                                         'dbname': DB_DATABASE,
+                                         'sslmode': DB_SSL_MODE,
+                                         'sslcert': DB_SSL_CERTIFICATE_CLIENT,
+                                         'sslkey': DB_SSL_CERTIFICATE_CLIENT_KEY,
+                                         'sslrootcert': DB_SSL_CERTIFICATE_ROOT}
+                                    }
     SQLALCHEMY_TRACK_MODIFICATIONS = False
-    SQLALCHEMY_ENGINE_OPTIONS = {'max_identifier_length': 128}
     SQLALCHEMY_ECHO = DEBUG
+    SQLALCHEMY_NAMING_CONVENTION = {
+        "ix": "ix_%(column_0_label)s",
+        "uq": "uq_%(table_name)s_%(column_0_name)s",
+        "ck": "ck_%(table_name)s_%(constraint_name)s",
+        "fk": "fk_%(table_name)s_%(column_0_name)s_%(referred_table_name)s",
+        "pk": "pk_%(table_name)s"
+    }
+    SQLALCHEMY_SCHEMA = 'ertie'
 
     # FULL-TEXT SEARCH SETTINGS ########################################################################################
     MEILISEARCH_URL = os.environ.get('MEILISEARCH_URL')
