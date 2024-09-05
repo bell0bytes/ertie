@@ -13,18 +13,19 @@ from typing import Type
 # FLASK & EXTENSIONS ###################################################################################################
 import flask
 import werkzeug.exceptions
-from .extensions import csrf, bootstrap, moment, auth
+from .extensions import csrf, bootstrap, moment, auth, database
 
 # CONFIGURATION ########################################################################################################
 from .conf import Config                                        # the configuration file
 
-
 # COMPONENTS ###########################################################################################################
 import traceback                                                # exception history handling
-from app.components.logging import Logger
+from app.components.logging import Logger                       # the logging component
+from app.components.auth import bpAuth                          # the authentication component
+from app.components.main import bpMain                          # the main/index component
 
 ########################################################################################################################
-# MAIN APP #############################################################################################################
+# FLASK APP FACTORY ####################################################################################################
 ########################################################################################################################
 def createApp(configClass : Type[Config] = Config) -> flask.Flask:
     """
@@ -102,15 +103,24 @@ def createApp(configClass : Type[Config] = Config) -> flask.Flask:
     except Exception as e:
         _logAndRaiseException(app.logger, 'Unable to initialize the OAuth module!', e)
 
+    # DATABASE #########################################################################################################
+    try:
+        # initialize the database and its migration
+        database.init(app)
+
+        # log success
+        app.logger.info('Database: Operational!')
+    except Exception as e:
+        _logAndRaiseException(app.logger, 'Unable to initialize the database.', e)
+
     # BLUEPRINTS #######################################################################################################
     try:
         # initialize the index / main module
-        from app.components.main import bpMain
         app.register_blueprint(bpMain)
         app.logger.info('Index Module: Operational!')
 
         # initialize the authentication module
-        from app.components.auth import bpAuth
+
         app.register_blueprint(bpAuth)
         app.logger.info('Authentication Module: Operational!\n-----')
     except Exception as e:

@@ -1,5 +1,5 @@
 """
-Unit tests for the auth blueprint.
+Tests for the auth blueprint.
 Warning: this is a stub
 
 SPDX-FileCopyrightText: © 2024 Gilles Bellot <gilles.bellot@bell0bytes.eu>
@@ -20,14 +20,14 @@ def test_logout(testClient):
         assert session.get('user') is None
 
 def test_login(testClient, mocker):
-    mocker.patch('app.components.auth.auth._login', return_value='https://o.auth/callback')
+    mocker.patch('authlib.integrations.flask_client.FlaskOAuth2App.authorize_redirect', return_value='success')
     response = testClient.get('/login')
     assert response.status_code == 200
-    assert b'https://o.auth/callback' in response.data
+    assert b'success' in response.data
 
 def test_callback(testClient, mocker):
-    mocker.patch('app.components.auth.auth._getUser', return_value={'name': 'cosmo',
-                                                                    'email': 'cosmo@best.dog'})
+    mocker.patch('authlib.integrations.flask_client.FlaskOAuth2App.authorize_access_token',
+                 return_value={'name': 'cosmo', 'email': 'cosmo@best.dog'})
     with testClient:
         response = testClient.get('/callback')
         assert response.status_code == 302
