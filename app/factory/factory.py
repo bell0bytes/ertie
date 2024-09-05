@@ -13,7 +13,7 @@ from typing import Type
 # FLASK & EXTENSIONS ###################################################################################################
 import flask
 import werkzeug.exceptions
-from .extensions import csrf, bootstrap, moment, auth, db, dbMigrate
+from .extensions import csrf, bootstrap, moment, auth, database
 
 # CONFIGURATION ########################################################################################################
 from .conf import Config                                        # the configuration file
@@ -106,8 +106,7 @@ def createApp(configClass : Type[Config] = Config) -> flask.Flask:
     # DATABASE #########################################################################################################
     try:
         # initialize the database and its migration
-        db.init_app(app)
-        dbMigrate.init_app(app, db)
+        database.init(app)
 
         # log success
         app.logger.info('Database: Operational!')
