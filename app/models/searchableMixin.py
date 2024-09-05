@@ -19,7 +19,7 @@ if TYPE_CHECKING:
 ########################################################################################################################
 class SearchableMixin:
     @classmethod
-    def search(cls, expression: str, page: int, perPage: int) -> tuple[sqlalchemy.orm.scoped_session.Scalar_Result, int]:
+    def search(cls, expression: str, page: int, perPage: int) -> tuple[list[sqlalchemy.engine.ScalarResult], int]:
         # noinspection PyUnresolvedReferences
         ids, total = fullTextSearch.queryIndex(index=cls.__tablename__,
                                                query=expression, resync=False,
@@ -36,14 +36,14 @@ class SearchableMixin:
         return database.db.session.scalars(query), total
 
     @classmethod
-    def beforeCommit(cls, session: flask_sqlalchemy.session) -> None:
+    def beforeCommit(cls, session: 'flask_sqlalchemy.session') -> None:
         session._changes = {
             'add': [obj for obj in session.new if isinstance(obj, cls)],
             'update': [obj for obj in session.dirty if isinstance(obj, cls)],
             'delete': [obj for obj in session.deleted if isinstance(obj, cls)]}
 
     @classmethod
-    def afterCommit(cls, session: flask_sqlalchemy.session) -> None:
+    def afterCommit(cls, session: 'flask_sqlalchemy.session') -> None:
         for obj in session._changes['add']:
             fullTextSearch.addToIndex(obj.__tablename__, obj)
         for obj in session._changes['update']:
