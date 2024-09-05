@@ -115,10 +115,10 @@ class Config:
     SQLALCHEMY_SCHEMA = 'ertie'
 
     # FULL-TEXT SEARCH SETTINGS ########################################################################################
-    MEILISEARCH_URL = os.environ.get('MEILISEARCH_URL')
-    MEILISEARCH_PORT = os.environ.get('MEILISEARCH_PORT')
-    MEILISEARCH_INDEX = os.environ.get('MEILISEARCH_INDEX')
-    MEILISEARCH_API_KEY = os.environ.get('MEILISEARCH_API_KEY')
+    FULLTEXT_SEARCH_PROVIDER = os.environ.get('FULLTEXT_SEARCH_PROVIDER', 'meilisearch')    # the fts provider
+    FULLTEXT_SEARCH_URL = os.environ.get('FULLTEXT_SEARCH_URL')
+    FULLTEXT_SEARCH_INDEX = os.environ.get('FULLTEXT_SEARCH_INDEX')
+    FULLTEXT_SEARCH_API_KEY = os.environ.get('FULLTEXT_SEARCH_API_KEY')
 
     # EMAIL SETTINGS ###################################################################################################
     MAIL_SERVER = os.environ.get('MAIL_SERVER')

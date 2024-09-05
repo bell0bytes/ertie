@@ -16,6 +16,7 @@ from authlib.integrations.flask_client import OAuth                 # OAuth clie
 import sqlalchemy                                                   # DB agnostic SQL support
 import flask_sqlalchemy                                             # Flask integration with SQLAlchemy
 import flask_migrate                                                # Alembic support for DB migrations
+from app.factory.classes.fullTextSearch import FullTextSearch       # FullTextSearch Wrapper
 
 ########################################################################################################################
 # GLOBAL EXTENSIONS ####################################################################################################
@@ -28,3 +29,4 @@ db = flask_sqlalchemy.SQLAlchemy(metadata=sqlalchemy.MetaData(naming_convention=
                                                               schema=Config.SQLALCHEMY_SCHEMA),
                                  session_options={'autoflush': False})
 dbMigrate = flask_migrate.Migrate()
+fullTextSearch = FullTextSearch()
