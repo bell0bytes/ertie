@@ -12,7 +12,7 @@ from app.factory.conf import Config
 
 from typing import TYPE_CHECKING
 if TYPE_CHECKING:
-    from app.factory.extensions import db
+    from app.factory.extensions import database
 
 ########################################################################################################################
 # CLASS ################################################################################################################
@@ -43,10 +43,10 @@ class FullTextSearch:
     ####################################################################################################################
     # PUBLIC METHODS €##################################################################################################
     ####################################################################################################################
-    def addToIndex(self, index: str, model: 'db.Model'):
+    def addToIndex(self, index: str, model: 'database.db.Model'):
         return self._engine.addToIndex(index, model)
 
-    def removeFromIndex(self, index: str, model: 'db.Model'):
+    def removeFromIndex(self, index: str, model: 'database.db.Model'):
         return self._engine.removeFromIndex(index, model)
 
     def queryIndex(self, index: str, query: str, resync:bool=False):
