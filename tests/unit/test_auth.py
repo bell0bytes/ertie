@@ -1,5 +1,5 @@
 """
-Unit tests for the auth blueprint.
+Tests for the auth blueprint.
 Warning: this is a stub
 
 SPDX-FileCopyrightText: © 2024 Gilles Bellot <gilles.bellot@bell0bytes.eu>

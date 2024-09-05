@@ -70,11 +70,11 @@ class Config:
     # DATABASE SETTINGS ################################################################################################
     DB_DIALECT = os.environ.get('DB_DIALECT', 'postgresql')         # i.e. postgresql, oracle, mysql, sqlite ...
     DB_DRIVER = os.environ.get('DB_DRIVER', 'psycopg2')             # i.e. psycopg2, oracle, ...
-    DB_USERNAME = os.environ.get('DB_USERNAME')
+    DB_USERNAME = os.environ.get('DB_USERNAME', 'postgresql')
     DB_PASSWORD = os.environ.get('DB_PASSWORD')                     # if no pw is set, SSL mode is assumed
-    DB_HOST = os.environ.get('DB_HOST')
+    DB_HOST = os.environ.get('DB_HOST', 'http://localhost')
     DB_PORT = int(os.environ.get('DB_PORT', '5432'))
-    DB_DATABASE = os.environ.get('DB_DATABASE')                     # oracle -> service
+    DB_DATABASE = os.environ.get('DB_DATABASE'), 'ertie'            # oracle -> service
     DB_SSL_CERTIFICATE_CLIENT = os.environ.get('DB_SSL_CERTIFICATE_CLIENT')         # path to the ssl certificate
     DB_SSL_CERTIFICATE_CLIENT_KEY = os.environ.get('DB_SSL_CERTIFICATE_CLIENT_KEY') # path to the ssl key
     DB_SSL_CERTIFICATE_ROOT = os.environ.get('DB_SSL_CERTIFICATE_ROOT')             # path to the root CA
@@ -82,7 +82,7 @@ class Config:
 
     # SQLALCHEMY SETTINGS ##############################################################################################
     SQLALCHEMY_DATABASE_URI = f'{DB_DIALECT}+{DB_DRIVER}://'
-    if DB_PASSWORD != '':
+    if DB_PASSWORD != '': # pragma: no cover
         SQLALCHEMY_ENGINE_OPTIONS = {'max_identifier_length': 128,
                                      'connect_args': {
                                          'host': DB_HOST,
@@ -116,7 +116,7 @@ class Config:
 
     # FULL-TEXT SEARCH SETTINGS ########################################################################################
     FULLTEXT_SEARCH_PROVIDER = os.environ.get('FULLTEXT_SEARCH_PROVIDER', 'meilisearch')    # the fts provider
-    FULLTEXT_SEARCH_URL = os.environ.get('FULLTEXT_SEARCH_URL')
+    FULLTEXT_SEARCH_URL = os.environ.get('FULLTEXT_SEARCH_URL', 'http://localhost')
     FULLTEXT_SEARCH_INDEX = os.environ.get('FULLTEXT_SEARCH_INDEX')
     FULLTEXT_SEARCH_API_KEY = os.environ.get('FULLTEXT_SEARCH_API_KEY')
 
