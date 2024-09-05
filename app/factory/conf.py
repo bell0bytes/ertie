@@ -74,7 +74,7 @@ class Config:
     DB_PASSWORD = os.environ.get('DB_PASSWORD')                     # if no pw is set, SSL mode is assumed
     DB_HOST = os.environ.get('DB_HOST', 'http://localhost')
     DB_PORT = int(os.environ.get('DB_PORT', '5432'))
-    DB_DATABASE = os.environ.get('DB_DATABASE'), 'ertie'            # oracle -> service
+    DB_DATABASE = os.environ.get('DB_DATABASE', 'ertie')            # oracle -> service
     DB_SSL_CERTIFICATE_CLIENT = os.environ.get('DB_SSL_CERTIFICATE_CLIENT')         # path to the ssl certificate
     DB_SSL_CERTIFICATE_CLIENT_KEY = os.environ.get('DB_SSL_CERTIFICATE_CLIENT_KEY') # path to the ssl key
     DB_SSL_CERTIFICATE_ROOT = os.environ.get('DB_SSL_CERTIFICATE_ROOT')             # path to the root CA
