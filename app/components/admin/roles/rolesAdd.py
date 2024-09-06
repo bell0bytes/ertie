@@ -22,7 +22,7 @@ from app.components.admin import bpAdmin
 from .methods import validateAndCommitSecurityRole
 
 # FORMS ################################################################################################################
-from app.forms.members import FormRolesAdd
+from app.forms.admin import FormRolesAdd
 
 ########################################################################################################################
 # ROUTE ################################################################################################################

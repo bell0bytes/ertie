@@ -15,7 +15,7 @@ import flask
 import werkzeug.exceptions
 from app.factory.extensions import database
 from app.components.admin import bpAdmin
-from app.models.members import Role
+from app.models.members import Role, RoleUserMapping
 
 ########################################################################################################################
 # ROUTE ################################################################################################################
@@ -33,6 +33,12 @@ def roleDelete(objectID):
             return flask.redirect(flask.session['referrer'])
 
         # do not delete roles with associated users
+        users = database.db.session.execute(database.db.select(RoleUserMapping)
+                                           .filter_by(roleFK=role.uid)).scalars()
+
+        if len(users) > 0:
+            flask.flash(f'Warning: There are still users associated to the role {role}!', 'warning')
+            return flask.redirect(flask.session['referrer'])
 
         # delete the object
         database.deleteObject(role)

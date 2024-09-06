@@ -1,5 +1,5 @@
 """
-Form to create a new member.
+Form to create a new security role.
 
 :Authors:
     - Gilles Bellot

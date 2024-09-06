@@ -13,7 +13,7 @@ from app.components.admin import bpAdmin
 from app.factory.extensions import database
 
 # DATABASE MODELS ######################################################################################################
-from app.models.members import Role
+from app.models.members import Role, RoleUserMapping
 
 ########################################################################################################################
 # ROUTING ##############################################################################################################
@@ -24,9 +24,8 @@ def lobby():
     The main lobby for the administration module.
     """
     try:
-        query = sqlalchemy.select(Role).order_by(Role.name.asc())
         payload = {
-            'roles': database.db.session.scalars(query).all()
+            'roles': database.db.session.scalars( sqlalchemy.select(Role).order_by(Role.name.asc())).all()
         }
 
         # render template

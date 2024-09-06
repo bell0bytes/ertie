@@ -11,4 +11,4 @@ SPDX-License-Identifier: AGPL-3.0-or-later
 # this is necessary for the relationship function to work
 from .members import Member
 from .membersChangeLog import MemberChangeLog
-from .roles import Role
+from .roles import Role, RoleUserMapping
