@@ -57,6 +57,12 @@ class Config:
     SESSION_REFRESH_EACH_REQUEST = True if os.environ.get('SESSION_REFRESH_EACH_REQUEST', '1') == '1' else False
     MAX_COOKIE_SIZE = int(os.environ.get('MAX_COOKIE_SIZE', '4093'))
 
+    # CSRF SETTINGS ####################################################################################################
+    WTF_CSRF_ENABLED = True if os.environ.get('WTF_CSRF_ENABLED', '1') == '1' else False
+    WTF_CSRF_CHECK_DEFAULT = True if os.environ.get('WTF_CSRF_CHECK_DEFAULT', '1') == '1' else False
+    WTF_CSRF_TIME_LIMIT = int(os.environ.get('WTF_CSRF_TIME_LIMIT', '3600'))
+    WTF_CSRF_SSL_STRICT = True if os.environ.get('WTF_CSRF_SSL_STRICT', '1') == '1' else False
+
     # SERVER SETTINGS ##################################################################################################
     USE_X_SENDFILE = True if os.environ.get('USE_X_SENDFILE', '1') == '1' else False
     SEND_FILE_MAX_AGE_DEFAULT = None

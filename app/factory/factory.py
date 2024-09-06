@@ -24,6 +24,7 @@ from app.components.logging import Logger                       # the logging co
 from app.components.auth import bpAuth                          # the authentication component
 from app.components.main import bpMain                          # the main/index component
 from app.components.members import bpMembers                    # the member management component
+from app.components.admin import bpAdmin                        # the administration component
 
 ########################################################################################################################
 # FLASK APP FACTORY ####################################################################################################
@@ -131,7 +132,11 @@ def createApp(configClass : Type[Config] = Config) -> flask.Flask:
 
         # initialize the members module
         app.register_blueprint(bpMembers)
-        app.logger.info('Members Module: Operational!\n-----')
+        app.logger.info('Members Module: Operational!')
+
+        # initialize the administration module
+        app.register_blueprint(bpAdmin)
+        app.logger.info('Administration Module: Operational!\n-----')
     except Exception as e:
         _logAndRaiseException(app.logger, 'Unable to initialize blueprints!.', e)
 

@@ -15,3 +15,5 @@ from flask import Blueprint
 bpAdmin = Blueprint('admin', __name__, url_prefix='/admin')
 
 # ROUTES ###############################################################################################################
+from .adminLobby import lobby
+from .roles import roleAdd, roleDelete

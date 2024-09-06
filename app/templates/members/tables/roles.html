@@ -44,8 +44,8 @@
                        href=""
                        class="btn btn-sm btn-outline-warning text-dark">Edit</a>
                     <a style="text-decoration: none; color: black"
-                       href=""
-                       class="btn btn-sm">Del</a>
+                       href="{{ url_for('admin.roleDelete', objectID = role.uid) }}"
+                       class="btn btn-sm btn-outline-danger">Del</a>
                 </td>
             </tr>
         {% endfor %}

@@ -43,8 +43,9 @@ def login():
             # if the user is already logged in -> redirect to the main index page
             return flask.redirect(flask.url_for(mainIndex))
 
-        # let the OAuth provider handle the login
-        return _login()
+        # redirect to the auth provider
+        redirect_uri = flask.url_for('auth.callback', _external=True)
+        return getattr(auth, Config.AUTH_NAME).authorize_redirect(redirect_uri)
     except Exception as e:
         raise werkzeug.exceptions.InternalServerError('Unable to login!') from e
 
@@ -52,7 +53,7 @@ def login():
 def callback():
     try:
         # handle the callback from the auth provider and store the user token in the session variable
-        userInfo = _getUserInfo()
+        userInfo = getattr(auth, Config.AUTH_NAME).authorize_access_token().get('userinfo')
 
         try:
             # check if the user already exists
@@ -72,23 +73,7 @@ def callback():
 @bpAuth.route('/logout')
 def logout():
     try:
-        _logout()
+        flask_login.logout_user()
         return flask.redirect(flask.url_for(mainIndex))
     except Exception as e:
         raise werkzeug.exceptions.InternalServerError('Unable to logout!') from e
-
-########################################################################################################################
-# HELPERS ##############################################################################################################
-########################################################################################################################
-def _login() -> str:
-    # redirect to the auth provider
-    redirect_uri = flask.url_for('auth.callback', _external=True)
-    return getattr(auth, Config.AUTH_NAME).authorize_redirect(redirect_uri)
-
-def _getUserInfo() -> dict:
-    # get the user information from the access token
-    return getattr(auth, Config.AUTH_NAME).authorize_access_token().get('userinfo')
-
-def _logout() -> None:
-    # pop the user from the session
-    flask.session.pop('user', None)
