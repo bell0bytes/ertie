@@ -57,8 +57,10 @@ def callback():
         try:
             # check if the user already exists
             user = database.db.session.execute(database.db.select(Member)
-                                      .filter_by(username=userInfo.get('preferred_username'))).scalar_one()
-            flask.flash(user)
+                                      .filter_by(username=userInfo.get('username'))).scalar_one()
+            # log the user in and flash a welcome message
+            flask_login.login_user(user, remember=True)
+            flask.flash(f'Hallo, {user}', 'success')
         except sqlalchemy.exc.NoResultFound:
             # the user does not yet exist -> create it
             pass
@@ -87,6 +89,6 @@ def _getUserInfo() -> dict:
     # get the user information from the access token
     return getattr(auth, Config.AUTH_NAME).authorize_access_token().get('userinfo')
 
-def _logout():
+def _logout() -> None:
     # pop the user from the session
     flask.session.pop('user', None)

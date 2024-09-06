@@ -9,7 +9,7 @@ SPDX-License-Identifier: AGPL-3.0-or-later
 # INCLUDES #############################################################################################################
 ########################################################################################################################
 import sqlalchemy.orm
-from typing import List
+from typing import List, Optional
 from app.factory.extensions import database, loginManager
 from app.models.searchableMixin import SearchableMixin
 from flask_login import UserMixin
@@ -38,6 +38,11 @@ class Member(UserMixin, SearchableMixin, database.db.Model):
                                                                           sqlalchemy.String(64))
     email: sqlalchemy.orm.Mapped[str] = sqlalchemy.orm.mapped_column('email',
                                                                      sqlalchemy.String(128), unique=True)
+    nickname: sqlalchemy.orm.Mapped[Optional[str]] = sqlalchemy.orm.mapped_column('nickname',
+                                                                                  sqlalchemy.String(64), unique=True)
+    gender: sqlalchemy.orm.Mapped[str] = sqlalchemy.orm.mapped_column('gender', sqlalchemy.String(1))
+    picture: sqlalchemy.orm.Mapped[Optional[str]] = sqlalchemy.orm.mapped_column('picture',
+                                                                                 sqlalchemy.String(4096))
 
     # RELATIONSHIPS ####################################################################################################
     history: sqlalchemy.orm.Mapped[List['MemberChangeLog']] = sqlalchemy.orm.relationship(back_populates='member',
@@ -59,7 +64,7 @@ class Member(UserMixin, SearchableMixin, database.db.Model):
         # check equality of class members
         for key, value in self.__dict__.items():
             # check each item in dictionary
-            if key not in ['_sa_instance_state', 'uid', 'history']:
+            if key not in ['_sa_instance_state', 'uid', 'history', 'picture']:
                 if value != other.__dict__[key]:
                     return False
         return True

@@ -1,0 +1,53 @@
+{# ################################################################################################################## #}
+{# DATA ############################################################################################################# #}
+{# ################################################################################################################## #}
+{% set roles = payload.get('roles') %}
+
+{# ################################################################################################################## #}
+{# TABLE ############################################################################################################ #}
+{# ################################################################################################################## #}
+<table class="table table-hover">
+        <thead>
+        <tr>
+            <th scope="col">
+                <span aria-hidden="true"><a style="color:black"
+                                            href="">&uarr;</a></span>
+                Name
+                <span aria-hidden="true"><a style="color:black"
+                                            href="">&darr;</a></span>
+            </th>
+            <th scope="col">
+                Description
+            </th>
+            <th scope="col" style="text-align:right">
+                Actions
+            </th>
+        </tr>
+        </thead>
+
+        <tbody>
+        {% for role in roles %}
+            <tr>
+                <td>
+                    {{ role.name }}
+                </td>
+
+                <td>
+                    {{ role.description|truncate(1024, True) }}
+                </td>
+
+                <td style="text-align:right">
+                    <a style="text-decoration: none; color: black"
+                       href=""
+                       class="btn btn-sm btn-outline-info">View</a>
+                    <a style="text-decoration: none; color: black"
+                       href=""
+                       class="btn btn-sm btn-outline-warning text-dark">Edit</a>
+                    <a style="text-decoration: none; color: black"
+                       href=""
+                       class="btn btn-sm">Del</a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>

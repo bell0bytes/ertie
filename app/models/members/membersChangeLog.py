@@ -12,7 +12,7 @@ from datetime import datetime, timezone
 import sqlalchemy.orm
 from app.factory.extensions import database
 
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Optional
 if TYPE_CHECKING:
     from app.models.members import Member
 
@@ -34,6 +34,11 @@ class MemberChangeLog(database.db.Model):
     oldFamilyName: sqlalchemy.orm.Mapped[str] = sqlalchemy.orm.mapped_column('old_family_name',
                                                                              sqlalchemy.String(64))
     oldEmail: sqlalchemy.orm.Mapped[str] = sqlalchemy.orm.mapped_column('old_email', sqlalchemy.String(64))
+    oldNickname: sqlalchemy.orm.Mapped[Optional[str]] = sqlalchemy.orm.mapped_column('old_nickname',
+                                                                           sqlalchemy.String(64))
+    oldGender: sqlalchemy.orm.Mapped[str] = sqlalchemy.orm.mapped_column('old_gender', sqlalchemy.String(1))
+    oldPicture: sqlalchemy.orm.Mapped[Optional[str]] = sqlalchemy.orm.mapped_column('old_picture',
+                                                                          sqlalchemy.String(4096))
     newUsername: sqlalchemy.orm.Mapped[str] = sqlalchemy.orm.mapped_column('new_username',
                                                                            sqlalchemy.String(64))
     newGivenName: sqlalchemy.orm.Mapped[str] = sqlalchemy.orm.mapped_column('new_given_name',
@@ -41,6 +46,12 @@ class MemberChangeLog(database.db.Model):
     newFamilyName: sqlalchemy.orm.Mapped[str] = sqlalchemy.orm.mapped_column('new_family_name',
                                                                              sqlalchemy.String(64))
     newEmail: sqlalchemy.orm.Mapped[str] = sqlalchemy.orm.mapped_column('new_email', sqlalchemy.String(64))
+
+    newNickname: sqlalchemy.orm.Mapped[Optional[str]] = sqlalchemy.orm.mapped_column('new_nickname',
+                                                                           sqlalchemy.String(64))
+    newGender: sqlalchemy.orm.Mapped[int] = sqlalchemy.orm.mapped_column('new_gender', sqlalchemy.String(1))
+    newPicture: sqlalchemy.orm.Mapped[Optional[str]] = sqlalchemy.orm.mapped_column('new_picture',
+                                                                          sqlalchemy.String(4096))
     when: sqlalchemy.orm.Mapped[datetime] = sqlalchemy.orm.mapped_column('when',
                                                                          default=lambda: datetime.now(timezone.utc))
     who: sqlalchemy.orm.Mapped[int] = sqlalchemy.orm.mapped_column('who',

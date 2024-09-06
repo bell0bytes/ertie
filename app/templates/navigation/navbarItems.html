@@ -5,12 +5,30 @@ SPDX-License-Identifier: AGPL-3.0-or-later
 
 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
     <li class="nav-item">
-            <!-- Members -->
-            <a class="nav-link"
-               data-bs-toggle="tooltip"
-               data-bs-placement="bottom"
-               title="Members"
-               href="{{ url_for('members.lobby') }}">
-                Members</a>
-        </li>
+        <!-- Members -->
+        <a class="nav-link"
+           data-bs-toggle="tooltip"
+           data-bs-placement="bottom"
+           title="Members"
+           href="{{ url_for('members.lobby') }}">
+            Members</a>
+    </li>
+    <li class="nav-item">
+        <!-- Sponsoring -->
+        <a class="nav-link"
+           data-bs-toggle="tooltip"
+           data-bs-placement="bottom"
+           title="Sponsoring"
+           href="">
+            Sponsoring</a>
+    </li>
+    <li class="nav-item">
+        <!-- Administration -->
+        <a class="nav-link"
+           data-bs-toggle="tooltip"
+           data-bs-placement="bottom"
+           title="Administration"
+           href="">
+            Administration</a>
+    </li>
 </ul>
