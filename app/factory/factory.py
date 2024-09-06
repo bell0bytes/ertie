@@ -23,6 +23,7 @@ import traceback                                                # exception hist
 from app.components.logging import Logger                       # the logging component
 from app.components.auth import bpAuth                          # the authentication component
 from app.components.main import bpMain                          # the main/index component
+from app.components.members import bpMembers                    # the member management component
 
 ########################################################################################################################
 # FLASK APP FACTORY ####################################################################################################
@@ -109,7 +110,7 @@ def createApp(configClass : Type[Config] = Config) -> flask.Flask:
         database.init(app)
 
         # log success
-        app.logger.info('Database: Operational!')
+        app.logger.info('Database: Operational!\n-----')
     except Exception as e:
         _logAndRaiseException(app.logger, 'Unable to initialize the database.', e)
 
@@ -120,9 +121,12 @@ def createApp(configClass : Type[Config] = Config) -> flask.Flask:
         app.logger.info('Index Module: Operational!')
 
         # initialize the authentication module
-
         app.register_blueprint(bpAuth)
-        app.logger.info('Authentication Module: Operational!\n-----')
+        app.logger.info('Authentication Module: Operational!')
+
+        # initialize the members module
+        app.register_blueprint(bpMembers)
+        app.logger.info('Members Module: Operational!\n-----')
     except Exception as e:
         _logAndRaiseException(app.logger, 'Unable to initialize blueprints!.', e)
 

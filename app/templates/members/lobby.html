@@ -1,0 +1,54 @@
+{# ################################################################################################################## #}
+{# INCLUDES ######################################################################################################### #}
+{# ################################################################################################################## #}
+{% extends "base.html" %}
+
+{# ################################################################################################################## #}
+{# DATA ############################################################################################################# #}
+{# ################################################################################################################## #}
+{% set members = payload.get('members') %}
+{% set nFilters = 0 %}
+
+{# ################################################################################################################## #}
+{# MAIN CONTENT ##################################################################################################### #}
+{# ################################################################################################################## #}
+{% block app_content_fluid %}
+    <br >
+    <h1 class="text-center" id="top">Members</h1>
+    <hr>
+
+    <div class="container">
+        <div class="d-grid gap-2 row-cols-lg-3 d-md-flex justify-content-md-center">
+            <a href=""
+               class="btn btn-outline-success btn-lg">
+                Add Member
+            </a>
+            <button type="button"
+                    class="btn btn-lg {% if nFilters == 0 %} btn-outline-secondary {% else %} btn-secondary {% endif %}"
+                    data-bs-toggle="modal" data-bs-target="#filtersModal">
+                Select Filters {% if nFilters > 0 %}
+                <span class="badge badge-sm bg-dark">{{ nFilters }}</span>{% endif %}
+            </button>
+            <a href=""
+               class="btn btn-outline-info btn-lg">
+                Export
+            </a>
+        </div>
+    </div>
+
+    <!-- List of all Members -->
+    {% include 'members/tables/members.html' %}
+
+     <hr>
+
+    <div class="container">
+        <div class="d-grid gap-2 row-cols-lg-3 d-md-flex justify-content-md-center">
+            <a class="btn btn-outline-success btn-lg" href="">
+                Add Role
+            </a>
+            <a class="btn btn-outline-primary btn-lg" href="">
+                FLTT Sync
+            </a>
+        </div>
+    </div>
+{% endblock %}

@@ -45,7 +45,7 @@ class MemberChangeLog(database.db.Model):
                                                                          default=lambda: datetime.now(timezone.utc))
     who: sqlalchemy.orm.Mapped[int] = sqlalchemy.orm.mapped_column('who',
                                                                    sqlalchemy.ForeignKey('member.uid'))
-    why: sqlalchemy.orm.Mapped[str] = sqlalchemy.orm.mapped_column('why', sqlalchemy.String(4000))
+    why: sqlalchemy.orm.Mapped[str] = sqlalchemy.orm.mapped_column('why', sqlalchemy.String(4096))
 
     # RELATIONSHIPS ####################################################################################################
     member: sqlalchemy.orm.Mapped['Member'] = sqlalchemy.orm.relationship(back_populates='history',

@@ -1,0 +1,62 @@
+{% macro renderMembersLobbyTable(members) %}
+    <hr>
+    <p style="text-align:center">Mulder and Scully found <strong>{{ assets | length }}</strong> members based on your search criteria!</p>
+    <hr>
+
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <th scope="col">
+                <span aria-hidden="true"><a style="color:black"
+                                            href="">&uarr;</a></span>
+                Family Name
+                <span aria-hidden="true"><a style="color:black"
+                                            href="">&darr;</a></span>
+            </th>
+            <th scope="col">
+                <span aria-hidden="true"><a style="color:black"
+                                            href="">&uarr;</a></span>
+                Given Name
+                <span aria-hidden="true"><a style="color:black"
+                                            href="">&darr;</a></span>
+            </th>
+            <th scope="col">
+                E-Mail
+            </th>
+            <th scope="col" style="text-align:right">
+                Actions
+            </th>
+        </tr>
+        </thead>
+
+        <tbody>
+        {% for member in members %}
+            <tr>
+                <td>
+                    {{ member.familyName }}
+                </td>
+
+                <td>
+                    {{ member.givenName }}
+                </td>
+
+                <td>
+                    {{ member.email }}
+                </td>
+
+                <td style="text-align:right">
+                    <a style="text-decoration: none; color: black"
+                       href=""
+                       class="btn btn-sm btn-outline-info">View</a>
+                    <a style="text-decoration: none; color: black"
+                       href=""
+                       class="btn btn-sm btn-outline-warning text-dark">Edit</a>
+                    <a style="text-decoration: none; color: black"
+                       href=""
+                       class="btn btn-sm">Del</a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endmacro %}
