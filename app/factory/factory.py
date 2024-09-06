@@ -13,7 +13,7 @@ from typing import Type
 # FLASK & EXTENSIONS ###################################################################################################
 import flask
 import werkzeug.exceptions
-from .extensions import csrf, bootstrap, moment, auth, database
+from .extensions import csrf, bootstrap, moment, auth, database, loginManager
 
 # CONFIGURATION ########################################################################################################
 from .conf import Config                                        # the configuration file
@@ -90,6 +90,7 @@ def createApp(configClass : Type[Config] = Config) -> flask.Flask:
 
     # AUTHENTICATION ###################################################################################################
     try:
+        # OAUth Provider
         auth.init_app(app)
         auth.register(name=app.config.get('AUTH_NAME'),
                       client_id=app.config.get('AUTH_CLIENT_ID'),
@@ -100,9 +101,13 @@ def createApp(configClass : Type[Config] = Config) -> flask.Flask:
                           'code_challenge_method': 'S256' # enable PKCE
                       }
         )
-        app.logger.info('OAuth: Operational!\n-----')
+        app.logger.info('OAuth: Operational!')
+
+        # LoginManager
+        loginManager.init_app(app)
+        app.logger.info('LoginManager: Operational!\n-----')
     except Exception as e:
-        _logAndRaiseException(app.logger, 'Unable to initialize the OAuth module!', e)
+        _logAndRaiseException(app.logger, 'Unable to initialize the Authentication module!', e)
 
     # DATABASE #########################################################################################################
     try:

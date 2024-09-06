@@ -10,8 +10,9 @@ SPDX-License-Identifier: AGPL-3.0-or-later
 ########################################################################################################################
 import sqlalchemy.orm
 from typing import List
-from app.factory.extensions import database
+from app.factory.extensions import database, loginManager
 from app.models.searchableMixin import SearchableMixin
+from flask_login import UserMixin
 
 from typing import TYPE_CHECKING
 if TYPE_CHECKING:
@@ -20,7 +21,7 @@ if TYPE_CHECKING:
 ########################################################################################################################
 # CLASS ################################################################################################################
 ########################################################################################################################
-class Member(SearchableMixin, database.db.Model):
+class Member(UserMixin, SearchableMixin, database.db.Model):
     # TABLE NAME #######################################################################################################
     __tablename__ = 'member'
 
@@ -62,3 +63,9 @@ class Member(SearchableMixin, database.db.Model):
                 if value != other.__dict__[key]:
                     return False
         return True
+
+# PUBLIC METHODS #######################################################################################################
+@loginManager.user_loader
+def loadUser(userID: str) -> Member:
+    # the flask login manager passes the id as a string
+    return database.db.session.get(Member, int(userID))
